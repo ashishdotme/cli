@@ -7,11 +7,51 @@ import manifest from "./deno.json" with { type: "json" };
 import { movieCmd } from "./movie.ts";
 import { eventCmd } from "./event.ts";
 import { transactionCmd } from "./transactions.ts";
+import { callApi } from "./lib.ts";
+import { format } from "npm:date-fns";
+import { colors } from "jsr:/@cliffy/ansi@1.0.0-rc.5/colors";
+
+// Define theme colors.
+const error = colors.bold.red;
+const warn = colors.bold.yellow;
+const info = colors.bold.blue;
 
 const rootCmd = new Command().name("ap").version(manifest.version).action(
-  () => {
-    rootCmd.showHelp();
-    console.log("Ashish Patel")
+  async () => {
+    const resp = await callApi(`/stats`);
+    if (!resp.ok) {
+      console.error(await resp.text());
+      Deno.exit(1);
+    }
+
+    const data = await resp.json();
+    if (!data) {
+      console.log(error("[ERROR]"), "invalid response");
+      Deno.exit(1);
+    }
+
+    console.log(
+      info(
+        `Today - ${
+          format(new Date(),"dd MMMM yyyy")
+        }`,
+      ),
+    );
+
+    console.log(
+      info(
+        `Last leetcode date - ${
+          format(new Date(data.lastLeetcodeDate),"dd MMMM yyyy")
+        }`,
+      ),
+    );
+    console.log(
+      info(
+        `Last Github Commit Date - ${
+          format(new Date(data.lastCommitDate.time), "dd MMMM yyyy")
+        }`,
+      ),
+    );
   },
 );
 
