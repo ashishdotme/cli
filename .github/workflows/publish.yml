@@ -9,6 +9,8 @@ jobs:
   publish:
     name: Publish binaries for ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    fail-fast: false
     strategy:
       matrix:
         include:
