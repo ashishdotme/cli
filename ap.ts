@@ -41,14 +41,14 @@ const rootCmd = new Command().name("ap").version(manifest.version).action(
     console.log(
       info(
         `Last leetcode date - ${
-          format(new Date(data.lastLeetcodeDate),"dd MMMM yyyy")
+          format(new Date(data.lastLeetcode.created),"dd MMMM yyyy")
         }`,
       ),
     );
     console.log(
       info(
         `Last Github Commit Date - ${
-          format(new Date(data.lastCommitDate.time), "dd MMMM yyyy")
+          format(new Date(data.github.lastCommit), "dd MMMM yyyy")
         }`,
       ),
     );

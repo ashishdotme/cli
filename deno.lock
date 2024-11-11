@@ -216,6 +216,7 @@
       "jsr:@std/fs@0.229.3",
       "jsr:@std/path@1.0.0",
       "jsr:@std/streams@0.224.5",
+      "npm:date-fns",
       "npm:emphasize@7.0.0",
       "npm:highlight.js@^11.10.0",
       "npm:open@10.1.0",

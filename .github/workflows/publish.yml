@@ -1,18 +1,39 @@
-# .github/workflows/publish.yml
-
-name: Publish
+name: Publish Binaries
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - '*'
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write # The OIDC ID token is used for authentication with JSR.
+    name: Publish binaries for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset_name: ap-linux
+          - os: windows-latest
+            asset_name: ap-windows.exe
+          - os: macos-latest
+            asset_name: ap-macos
+
     steps:
-      - uses: actions/checkout@v4
-      - run: npx jsr publish
+    - uses: actions/checkout@v2
+
+    - name: Setup Deno
+      uses: denoland/setup-deno@v1
+      with:
+        deno-version: ${{ matrix.deno }}
+
+    - name: Compile to binary
+      run: deno compile --output=${{ matrix.asset_name }} -q --allow-net --import-map=import_map.json cli.ts
+
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ${{ matrix.asset_name }}
+        asset_name: ${{ matrix.asset_name }}
+        tag: ${{ github.ref }}
