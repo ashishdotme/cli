@@ -7,7 +7,7 @@ import { denoPlugins } from "jsr:@luca/esbuild-deno-loader@^0.11.0";
 
 const result = await esbuild.build({
   plugins: [...denoPlugins()],
-  entryPoints: ["https://deno.land/std@0.185.0/bytes/mod.ts"],
+  entryPoints: ["./src/ap.ts"],
   outfile: "./dist/ap.esm.js",
   bundle: true,
   format: "esm",
