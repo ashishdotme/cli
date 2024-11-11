@@ -1,6 +1,6 @@
 import { Command } from "@cliffy/command";
 import { Table } from "@cliffy/table";
-import { callApi, callJobsApi, printJson } from "./lib.ts";
+import { callApi, callJobsApi, printJson } from "../common/lib.ts";
 import { format } from "jsr:/@std/datetime@0.224.0/format";
 import { colors } from "jsr:/@cliffy/ansi@1.0.0-rc.5/colors";
 

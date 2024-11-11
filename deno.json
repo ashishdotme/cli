@@ -3,7 +3,18 @@
   "version": "1.0.0",
   "exports": "./ap.ts",
   "license": "MIT",
+  "tasks": {
+    "dev": "deno run -A --watch src/ap.ts",
+    "lint": "deno lint",
+    "lint:watch": "deno lint --watch",
+    "fmt": "deno fmt",
+    "fmt:watch": "deno fmt --watch",
+    "bundle": "deno run -A ./src/bundle.ts",
+    "compile": "deno compile -A ./src/ap.ts"
+  },
   "imports": {
+    "src/": "./src/",
+    "std/": "https://deno.land/std@0.190.0/",
     "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.5",
     "@cliffy/table": "jsr:@cliffy/table@1.0.0-rc.5",
     "@std/encoding": "jsr:@std/encoding@1.0.1",
@@ -18,8 +29,6 @@
     "dayjs": "npm:date-fns"
   },
   "fmt": {
-    "include": [
-      "**/*.ts"
-    ]
+    "include": ["**/*.ts"]
   }
 }

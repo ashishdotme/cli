@@ -3,11 +3,11 @@ import { Command } from "@cliffy/command";
 import { CompletionsCommand } from "@cliffy/command/completions";
 import { UpgradeCommand } from "@cliffy/command/upgrade";
 import { JsrProvider } from "@cliffy/command/upgrade/provider/jsr";
-import manifest from "./deno.json" with { type: "json" };
-import { movieCmd } from "./movie.ts";
-import { eventCmd } from "./event.ts";
-import { transactionCmd } from "./transactions.ts";
-import { callApi } from "./lib.ts";
+import manifest from "../deno.json" with { type: "json" };
+import { movieCmd } from "./commands/movie.ts";
+import { eventCmd } from "./commands/event.ts";
+import { transactionCmd } from "./commands/transactions.ts";
+import { callApi } from "./common/lib.ts";
 import { format } from "npm:date-fns";
 import { colors } from "jsr:/@cliffy/ansi@1.0.0-rc.5/colors";
 

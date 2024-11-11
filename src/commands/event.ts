@@ -1,6 +1,6 @@
 import { Command } from "@cliffy/command";
 import { Table } from "@cliffy/table";
-import { callApi, printJson } from "./lib.ts";
+import { callApi, printJson } from "../common/lib.ts";
 import { colors } from "jsr:/@cliffy/ansi@1.0.0-rc.5/colors";
 
 // Define theme colors.
