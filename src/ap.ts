@@ -10,6 +10,7 @@ import { transactionCmd } from "./commands/transactions.ts";
 import { callApi } from "./common/lib.ts";
 import { format } from "npm:date-fns";
 import { colors } from "jsr:/@cliffy/ansi@1.0.0-rc.5/colors";
+import { readmeCmd } from "src/commands/readme.ts";
 
 // Define theme colors.
 const error = colors.bold.red;
@@ -60,6 +61,8 @@ rootCmd.command("movie", movieCmd);
 rootCmd.command("event", eventCmd);
 
 rootCmd.command("transaction", transactionCmd);
+
+rootCmd.command("readme", readmeCmd);
 
 rootCmd.command("completions", new CompletionsCommand());
 

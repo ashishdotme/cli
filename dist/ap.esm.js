@@ -101,8 +101,8 @@ function code(open, close) {
     regexp: new RegExp(`\\x1b\\[${close}m`, "g")
   };
 }
-function run(str, code2) {
-  return enabled ? `${code2.open}${str.replace(code2.regexp, code2.open)}${code2.close}` : str;
+function run(str, code3) {
+  return enabled ? `${code3.open}${str.replace(code3.regexp, code3.open)}${code3.close}` : str;
 }
 function reset(str) {
   return run(str, code([0], 0));
@@ -326,8 +326,8 @@ var init_deno_runtime = __esm({
     init_colors();
     init_runtime();
     DenoRuntime = class extends Runtime {
-      async upgrade({ provider, name, main, to, importMap, verbose, logger, args = [] }) {
-        const specifier = provider.getSpecifier(name, to, main);
+      async upgrade({ provider, name, main: main2, to, importMap, verbose, logger, args = [] }) {
+        const specifier = provider.getSpecifier(name, to, main2);
         const cmdArgs = ["install", `--name=${name}`, "--global", "--force"];
         if (!verbose) {
           cmdArgs.push("--quiet");
@@ -375,13 +375,13 @@ var init_node_runtime = __esm({
       upgrade({
         provider,
         name,
-        main,
+        main: main2,
         to,
         verbose,
         logger,
         args = []
       }) {
-        const specifier = provider.getSpecifier(name, to, main).replace(/^(npm|jsr):/, "");
+        const specifier = provider.getSpecifier(name, to, main2).replace(/^(npm|jsr):/, "");
         const isJsr = provider.name === "jsr";
         const cmdArgs = ["install", "--global", "--force"];
         if (!verbose) {
@@ -405,7 +405,7 @@ var init_node_runtime = __esm({
         const stderr = [];
         proc.stderr?.on("data", (data) => stderr.push(data.toString()));
         const exitCode = await new Promise(
-          (resolve) => proc.on("close", resolve)
+          (resolve4) => proc.on("close", resolve4)
         );
         if (exitCode) {
           throw new Error(stderr.join("\n").trim());
@@ -1083,10 +1083,10 @@ var require_core = __commonJS({
       return COMMON_KEYWORDS.includes(keyword.toLowerCase());
     }
     var seenDeprecations = {};
-    var error5 = (message2) => {
+    var error6 = (message2) => {
       console.error(message2);
     };
-    var warn5 = (message2, ...args) => {
+    var warn6 = (message2, ...args) => {
       console.log(`WARN: ${message2}`, ...args);
     };
     var deprecated = (version2, message2) => {
@@ -1114,11 +1114,11 @@ var require_core = __commonJS({
       if (!Array.isArray(mode.begin))
         return;
       if (mode.skip || mode.excludeBegin || mode.returnBegin) {
-        error5("skip, excludeBegin, returnBegin not compatible with beginScope: {}");
+        error6("skip, excludeBegin, returnBegin not compatible with beginScope: {}");
         throw MultiClassError;
       }
       if (typeof mode.beginScope !== "object" || mode.beginScope === null) {
-        error5("beginScope must be object");
+        error6("beginScope must be object");
         throw MultiClassError;
       }
       remapScopeNames(mode, mode.begin, { key: "beginScope" });
@@ -1128,11 +1128,11 @@ var require_core = __commonJS({
       if (!Array.isArray(mode.end))
         return;
       if (mode.skip || mode.excludeEnd || mode.returnEnd) {
-        error5("skip, excludeEnd, returnEnd not compatible with endScope: {}");
+        error6("skip, excludeEnd, returnEnd not compatible with endScope: {}");
         throw MultiClassError;
       }
       if (typeof mode.endScope !== "object" || mode.endScope === null) {
-        error5("endScope must be object");
+        error6("endScope must be object");
         throw MultiClassError;
       }
       remapScopeNames(mode, mode.end, { key: "endScope" });
@@ -1408,31 +1408,31 @@ var require_core = __commonJS({
         if (match2) {
           const language = getLanguage(match2[1]);
           if (!language) {
-            warn5(LANGUAGE_NOT_FOUND.replace("{}", match2[1]));
-            warn5("Falling back to no-highlight mode for this block.", block);
+            warn6(LANGUAGE_NOT_FOUND.replace("{}", match2[1]));
+            warn6("Falling back to no-highlight mode for this block.", block);
           }
           return language ? match2[1] : "no-highlight";
         }
         return classes.split(/\s+/).find((_class) => shouldNotHighlight(_class) || getLanguage(_class));
       }
       function highlight2(codeOrLanguageName, optionsOrCode, ignoreIllegals) {
-        let code2 = "";
+        let code3 = "";
         let languageName = "";
         if (typeof optionsOrCode === "object") {
-          code2 = codeOrLanguageName;
+          code3 = codeOrLanguageName;
           ignoreIllegals = optionsOrCode.ignoreIllegals;
           languageName = optionsOrCode.language;
         } else {
           deprecated("10.7.0", "highlight(lang, code, ...args) has been deprecated.");
           deprecated("10.7.0", "Please use highlight(code, options) instead.\nhttps://github.com/highlightjs/highlight.js/issues/2277");
           languageName = codeOrLanguageName;
-          code2 = optionsOrCode;
+          code3 = optionsOrCode;
         }
         if (ignoreIllegals === void 0) {
           ignoreIllegals = true;
         }
         const context = {
-          code: code2,
+          code: code3,
           language: languageName
         };
         fire("before:highlight", context);
@@ -1698,7 +1698,7 @@ var require_core = __commonJS({
         }
         const language = getLanguage(languageName);
         if (!language) {
-          error5(LANGUAGE_NOT_FOUND.replace("{}", languageName));
+          error6(LANGUAGE_NOT_FOUND.replace("{}", languageName));
           throw new Error('Unknown language: "' + languageName + '"');
         }
         const md = compileLanguage(language);
@@ -1775,22 +1775,22 @@ var require_core = __commonJS({
           }
         }
       }
-      function justTextHighlightResult(code2) {
+      function justTextHighlightResult(code3) {
         const result = {
-          value: escape(code2),
+          value: escape(code3),
           illegal: false,
           relevance: 0,
           _top: PLAINTEXT_LANGUAGE,
           _emitter: new options.__emitter(options)
         };
-        result._emitter.addText(code2);
+        result._emitter.addText(code3);
         return result;
       }
-      function highlightAuto(code2, languageSubset) {
+      function highlightAuto(code3, languageSubset) {
         languageSubset = languageSubset || options.languages || Object.keys(languages);
-        const plaintext = justTextHighlightResult(code2);
+        const plaintext = justTextHighlightResult(code3);
         const results = languageSubset.filter(getLanguage).filter(autoDetection).map(
-          (name) => _highlight(name, code2, false)
+          (name) => _highlight(name, code3, false)
         );
         results.unshift(plaintext);
         const sorted = results.sort((a, b) => {
@@ -1895,11 +1895,11 @@ var require_core = __commonJS({
         try {
           lang = languageDefinition(hljs);
         } catch (error$1) {
-          error5("Language definition for '{}' could not be registered.".replace("{}", languageName));
+          error6("Language definition for '{}' could not be registered.".replace("{}", languageName));
           if (!SAFE_MODE) {
             throw error$1;
           } else {
-            error5(error$1);
+            error6(error$1);
           }
           lang = PLAINTEXT_LANGUAGE;
         }
@@ -2073,10 +2073,10 @@ function closestString(givenWord, possibleWords, options) {
   let nearestWord = possibleWords[0];
   let closestStringDistance = Infinity;
   for (const each of possibleWords) {
-    const distance = caseSensitive ? getWordDistance(givenWord, each) : getWordDistance(givenWord, each.toLowerCase());
-    if (distance < closestStringDistance) {
+    const distance2 = caseSensitive ? getWordDistance(givenWord, each) : getWordDistance(givenWord, each.toLowerCase());
+    if (distance2 < closestStringDistance) {
       nearestWord = each;
-      closestStringDistance = distance;
+      closestStringDistance = distance2;
     }
   }
   return nearestWord;
@@ -3054,26 +3054,26 @@ var TooManyArgumentsError = class _TooManyArgumentsError extends ValidationError
 };
 
 // https://jsr.io/@cliffy/internal/1.0.0-rc.5/runtime/exit.ts
-function exit(code2) {
-  const { Deno: Deno3, process } = globalThis;
-  const exit2 = Deno3?.exit ?? process?.exit;
+function exit(code3) {
+  const { Deno: Deno4, process } = globalThis;
+  const exit2 = Deno4?.exit ?? process?.exit;
   if (exit2) {
-    exit2(code2);
+    exit2(code3);
   }
   throw new Error("unsupported runtime");
 }
 
 // https://jsr.io/@cliffy/internal/1.0.0-rc.5/runtime/get_args.ts
 function getArgs() {
-  const { Deno: Deno3, process } = globalThis;
-  return Deno3?.args ?? process?.argv.slice(2) ?? [];
+  const { Deno: Deno4, process } = globalThis;
+  return Deno4?.args ?? process?.argv.slice(2) ?? [];
 }
 
 // https://jsr.io/@cliffy/internal/1.0.0-rc.5/runtime/get_env.ts
 function getEnv(name) {
-  const { Deno: Deno3, process } = globalThis;
-  if (Deno3) {
-    return Deno3.env.get(name);
+  const { Deno: Deno4, process } = globalThis;
+  if (Deno4) {
+    return Deno4.env.get(name);
   } else if (process) {
     return process.env[name];
   }
@@ -4309,8 +4309,8 @@ init_colors();
 
 // https://jsr.io/@cliffy/internal/1.0.0-rc.5/runtime/inspect.ts
 function inspect(value, colors2) {
-  const { Deno: Deno3 } = globalThis;
-  return Deno3?.inspect(
+  const { Deno: Deno4 } = globalThis;
+  return Deno4?.inspect(
     value,
     { depth: 1, colors: colors2, trailingComma: false }
   ) ?? JSON.stringify(value, null, 2);
@@ -5252,8 +5252,8 @@ var Command = class _Command {
         }
       }
       return await this.execute(options, args);
-    } catch (error5) {
-      this.handleError(error5);
+    } catch (error6) {
+      this.handleError(error6);
     }
   }
   getSubCommand(ctx) {
@@ -5542,9 +5542,9 @@ var Command = class _Command {
     }
     return params;
   }
-  handleError(error5) {
+  handleError(error6) {
     this.throw(
-      error5 instanceof ValidationError ? new ValidationError2(error5.message) : error5 instanceof Error ? error5 : new Error(`[non-error-thrown] ${error5}`)
+      error6 instanceof ValidationError ? new ValidationError2(error6.message) : error6 instanceof Error ? error6 : new Error(`[non-error-thrown] ${error6}`)
     );
   }
   /**
@@ -5554,18 +5554,18 @@ var Command = class _Command {
    *
    * @param error The error to handle.
    */
-  throw(error5) {
-    if (error5 instanceof ValidationError2) {
-      error5.cmd = this;
+  throw(error6) {
+    if (error6 instanceof ValidationError2) {
+      error6.cmd = this;
     }
-    this.getErrorHandler()?.(error5, this);
-    if (this.shouldThrowErrors() || !(error5 instanceof ValidationError2)) {
-      throw error5;
+    this.getErrorHandler()?.(error6, this);
+    if (this.shouldThrowErrors() || !(error6 instanceof ValidationError2)) {
+      throw error6;
     }
     this.showHelp();
-    console.error(red(`  ${bold("error")}: ${error5.message}
+    console.error(red(`  ${bold("error")}: ${error6.message}
 `));
-    exit(error5 instanceof ValidationError2 ? error5.exitCode : 1);
+    exit(error6 instanceof ValidationError2 ? error6.exitCode : 1);
   }
   /*****************************************************************************
    **** GETTER *****************************************************************
@@ -5686,9 +5686,9 @@ ${bold(k)} ${brightBlue(v)}`
   getHelpHandler() {
     return this._help ?? this._parent?.getHelpHandler();
   }
-  exit(code2 = 0) {
+  exit(code3 = 0) {
     if (this.shouldExit()) {
-      exit(code2);
+      exit(code3);
     }
   }
   /*****************************************************************************
@@ -6221,12 +6221,12 @@ var BashCompletionsGenerator = class _BashCompletionsGenerator {
   }
   /** Generates bash completions code. */
   generate() {
-    const path = this.cmd.getPath(this.name);
+    const path3 = this.cmd.getPath(this.name);
     const version = this.cmd.getVersion() ? ` v${this.cmd.getVersion()}` : "";
     return `#!/usr/bin/env bash
-# bash completion support for ${path}${version}
+# bash completion support for ${path3}${version}
 
-_${replaceSpecialChars(path)}() {
+_${replaceSpecialChars(path3)}() {
   local word cur prev listFiles
   local -a opts
   COMPREPLY=()
@@ -6319,21 +6319,21 @@ _${replaceSpecialChars(path)}() {
   return 0
 }
 
-complete -F _${replaceSpecialChars(path)} -o bashdefault -o default ${path}`;
+complete -F _${replaceSpecialChars(path3)} -o bashdefault -o default ${path3}`;
   }
   /** Generates bash completions method for given command and child commands. */
-  generateCompletions(name, command, path = "", index = 1) {
-    path = (path ? path + " " : "") + name;
+  generateCompletions(name, command, path3 = "", index = 1) {
+    path3 = (path3 ? path3 + " " : "") + name;
     const commandCompletions = this.generateCommandCompletions(
       command,
-      path,
+      path3,
       index
     );
     const childCommandCompletions = command.getCommands(false).filter((subCommand) => subCommand !== command).map(
       (subCommand) => this.generateCompletions(
         subCommand.getName(),
         subCommand,
-        path,
+        path3,
         index + 1
       )
     ).join("");
@@ -6341,10 +6341,10 @@ complete -F _${replaceSpecialChars(path)} -o bashdefault -o default ${path}`;
 
 ${childCommandCompletions}`;
   }
-  generateCommandCompletions(command, path, index) {
+  generateCommandCompletions(command, path3, index) {
     const flags = this.getFlags(command);
     const childCommandNames = command.getCommands(false).map((childCommand) => childCommand.getName());
-    const completionsPath = ~path.indexOf(" ") ? " " + path.split(" ").slice(1).join(" ") : "";
+    const completionsPath = ~path3.indexOf(" ") ? " " + path3.split(" ").slice(1).join(" ") : "";
     const optionArguments = this.generateOptionArguments(
       command,
       completionsPath
@@ -6353,7 +6353,7 @@ ${childCommandCompletions}`;
       command,
       completionsPath
     );
-    return `  __${replaceSpecialChars(path)}() {
+    return `  __${replaceSpecialChars(path3)}() {
     opts=(${[...flags, ...childCommandNames].join(" ")})
     ${completionsCmd}
     if [[ \${cur} == -* || \${COMP_CWORD} -eq ${index} ]] ; then
@@ -6385,24 +6385,24 @@ ${childCommandCompletions}`;
     }
     return opts;
   }
-  generateCommandCompletionsCommand(command, path) {
+  generateCommandCompletionsCommand(command, path3) {
     const args = command.getArguments();
     if (args.length) {
       const type = command.getType(args[0].type);
       if (type && type.handler instanceof FileType) {
         return `_${replaceSpecialChars(this.name)}_file_dir`;
       }
-      return `_${replaceSpecialChars(this.name)}_complete ${args[0].action}${path}`;
+      return `_${replaceSpecialChars(this.name)}_complete ${args[0].action}${path3}`;
     }
     return "";
   }
-  generateOptionCompletionsCommand(command, args, path, opts) {
+  generateOptionCompletionsCommand(command, args, path3, opts) {
     if (args.length) {
       const type = command.getType(args[0].type);
       if (type && type.handler instanceof FileType) {
         return `opts=(); _${replaceSpecialChars(this.name)}_file_dir`;
       }
-      return `opts=(); _${replaceSpecialChars(this.name)}_complete ${args[0].action}${path}`;
+      return `opts=(); _${replaceSpecialChars(this.name)}_complete ${args[0].action}${path3}`;
     }
     if (opts?.standalone) {
       return "opts=()";
@@ -6452,10 +6452,10 @@ var FishCompletionsGenerator = class _FishCompletionsGenerator {
   }
   /** Generates fish completions script. */
   generate() {
-    const path = this.cmd.getPath(this.name);
+    const path3 = this.cmd.getPath(this.name);
     const version = this.cmd.getVersion() ? ` v${this.cmd.getVersion()}` : "";
     return `#!/usr/bin/env fish
-# fish completion support for ${path}${version}
+# fish completion support for ${path3}${version}
 
 function __fish_${replaceSpecialChars2(this.name)}_using_command
   set -l cmds ${getCommandFnNames(this.name, this.cmd).join(" ")}
@@ -6600,11 +6600,11 @@ var ZshCompletionsGenerator = class _ZshCompletionsGenerator {
   }
   /** Generates zsh completions code. */
   generate() {
-    const path = this.cmd.getPath(this.name);
+    const path3 = this.cmd.getPath(this.name);
     const version = this.cmd.getVersion() ? ` v${this.cmd.getVersion()}` : "";
     return `#compdef ${this.name}
 
-# zsh completion support for ${path}${version}
+# zsh completion support for ${path3}${version}
 
 autoload -U is-at-least
 
@@ -6637,25 +6637,25 @@ ${this.generateCompletions(this.name, this.cmd).trim()}
 if [ "\${funcstack[1]}" = "_${this.name}" ]; then
   _${replaceSpecialChars3(this.name)} "\${@}"
 else
-  compdef _${replaceSpecialChars3(path)} ${path};
+  compdef _${replaceSpecialChars3(path3)} ${path3};
 fi`;
   }
   /** Generates zsh completions method for given command and child commands. */
-  generateCompletions(name, command, path = "") {
+  generateCompletions(name, command, path3 = "") {
     if (!command.hasCommands(false) && !command.hasOptions(false) && !command.hasArguments()) {
       return "";
     }
-    path = (path ? path + " " : "") + name;
+    path3 = (path3 ? path3 + " " : "") + name;
     return `# shellcheck disable=SC2154
-` + (command.getParent() ? `(( $+functions[_${replaceSpecialChars3(path)}] )) || ` : "") + `_${replaceSpecialChars3(path)}() {` + (!command.getParent() ? `
-  local state` : "") + this.generateCommandCompletions(command, path) + this.generateSubCommandCompletions(command, path) + this.generateArgumentCompletions(command, path) + this.generateActions(command) + `
+` + (command.getParent() ? `(( $+functions[_${replaceSpecialChars3(path3)}] )) || ` : "") + `_${replaceSpecialChars3(path3)}() {` + (!command.getParent() ? `
+  local state` : "") + this.generateCommandCompletions(command, path3) + this.generateSubCommandCompletions(command, path3) + this.generateArgumentCompletions(command, path3) + this.generateActions(command) + `
 }
 
 ` + command.getCommands(false).filter((subCommand) => subCommand !== command).map(
-      (subCommand) => this.generateCompletions(subCommand.getName(), subCommand, path)
+      (subCommand) => this.generateCompletions(subCommand.getName(), subCommand, path3)
     ).join("");
   }
-  generateCommandCompletions(command, path) {
+  generateCommandCompletions(command, path3) {
     const commands = command.getCommands(false);
     let completions = commands.map(
       (subCommand) => `'${subCommand.getName().replace(/:/g, "\\:")}:${subCommand.getShortDescription().replace(/'/g, `'"'"'`)}'`
@@ -6678,7 +6678,7 @@ fi`;
         completions += `
     ${fileCompletions}`;
       } else {
-        const completionsPath = path.split(" ").slice(1).join(" ");
+        const completionsPath = path3.split(" ").slice(1).join(" ");
         action = this.addAction(arg, completionsPath);
         if (action && command.getCompletion(arg.action)) {
           completions += `
@@ -6694,11 +6694,11 @@ fi`;
     }
     return completions;
   }
-  generateSubCommandCompletions(command, path) {
+  generateSubCommandCompletions(command, path3) {
     if (command.hasCommands(false)) {
       const actions = command.getCommands(false).map((command2) => {
         const aliases = [command2.getName(), ...command2.getAliases()].join("|");
-        const action = replaceSpecialChars3(path + " " + command2.getName());
+        const action = replaceSpecialChars3(path3 + " " + command2.getName());
         return `${aliases}) _${action} ;;`;
       }).join("\n      ");
       return `
@@ -6711,9 +6711,9 @@ fi`;
     }
     return "";
   }
-  generateArgumentCompletions(command, path) {
+  generateArgumentCompletions(command, path3) {
     this.actions.clear();
-    const options = this.generateOptions(command, path);
+    const options = this.generateOptions(command, path3);
     let argIndex = 0;
     let argsCommand = "\n\n  _arguments -w -s -S -C";
     if (command.hasOptions()) {
@@ -6744,7 +6744,7 @@ fi`;
             );
           }
         } else {
-          const completionsPath = path.split(" ").slice(1).join(" ");
+          const completionsPath = path3.split(" ").slice(1).join(" ");
           const action = this.addAction(arg, completionsPath);
           args.push(
             `${++argIndex}${arg.optional ? "::" : ":"}${arg.name}:->${action.name}`
@@ -6760,9 +6760,9 @@ fi`;
     }
     return argsCommand;
   }
-  generateOptions(command, path) {
+  generateOptions(command, path3) {
     const options = [];
-    const cmdArgs = path.split(" ");
+    const cmdArgs = path3.split(" ");
     const _baseName = cmdArgs.shift();
     const completionsPath = cmdArgs.join(" ");
     const excludedFlags = command.getOptions(false).map((option) => option.standalone ? option.flags : false).flat().filter((flag) => typeof flag === "string");
@@ -6885,9 +6885,9 @@ init_colors();
 
 // https://jsr.io/@cliffy/internal/1.0.0-rc.5/runtime/write_sync.ts
 function writeSync(data) {
-  const { Deno: Deno3, process } = globalThis;
-  if (Deno3) {
-    return Deno3.stdout.writeSync(data);
+  const { Deno: Deno4, process } = globalThis;
+  if (Deno4) {
+    return Deno4.stdout.writeSync(data);
   } else if (process) {
     process.stdout.write(data);
     return data.byteLength;
@@ -6948,8 +6948,8 @@ var Provider = class {
   maxListSize = 25;
   logger;
   maxCols = 8;
-  constructor({ main, logger = console } = {}) {
-    this.main = main;
+  constructor({ main: main2, logger = console } = {}) {
+    this.main = main2;
     this.logger = logger;
   }
   getSpecifier(name, version, defaultMain) {
@@ -7022,8 +7022,8 @@ var Provider = class {
     this.logger = logger;
   }
   getMain(defaultMain) {
-    const main = this.main ?? defaultMain;
-    return main ? `/${main}` : "";
+    const main2 = this.main ?? defaultMain;
+    return main2 ? `/${main2}` : "";
   }
 };
 
@@ -7049,9 +7049,9 @@ function createLogger({ spinner, verbose } = {}) {
 
 // https://jsr.io/@cliffy/internal/1.0.0-rc.5/runtime/no_color.ts
 function getNoColor() {
-  const { Deno: Deno3, process } = globalThis;
-  if (Deno3) {
-    return Deno3.noColor;
+  const { Deno: Deno4, process } = globalThis;
+  if (Deno4) {
+    return Deno4.noColor;
   } else if (process) {
     return process?.env.NO_COLOR === "1" || process?.env.NODE_DISABLE_COLORS === "1";
   }
@@ -7183,11 +7183,11 @@ var Spinner = class {
     }
     this.#active = true;
     let i = 0;
-    const noColor2 = getNoColor();
+    const noColor3 = getNoColor();
     const updateFrame = () => {
       const color = this.#color ?? "";
       const frame = encoder.encode(
-        noColor2 ? this.#spinner[i] + " " + this.message : color + this.#spinner[i] + COLOR_RESET + " " + this.message
+        noColor3 ? this.#spinner[i] + " " + this.message : color + this.#spinner[i] + COLOR_RESET + " " + this.message
       );
       const writeData = new Uint8Array(LINE_CLEAR.length + frame.length);
       writeData.set(LINE_CLEAR);
@@ -7227,8 +7227,8 @@ init_colors();
 
 // https://jsr.io/@cliffy/command/1.0.0-rc.5/upgrade/get_runtime.ts
 async function getRuntime() {
-  const { Deno: Deno3, process } = globalThis;
-  if (Deno3?.version?.deno) {
+  const { Deno: Deno4, process } = globalThis;
+  if (Deno4?.version?.deno) {
     const { DenoRuntime: DenoRuntime2 } = await Promise.resolve().then(() => (init_deno_runtime(), deno_runtime_exports));
     return { runtimeName: "deno", runtime: new DenoRuntime2() };
   } else if (process?.versions?.bun) {
@@ -7279,13 +7279,13 @@ async function upgrade({
           provider
         });
       }
-    } catch (error5) {
+    } catch (error6) {
       options.logger?.error(
         red(
           `Failed to upgrade ${bold(options.name)} ${options.from ? `from version ${bold(options.from)} ` : ""}to ${bold(options.to)}.`
         )
       );
-      throw error5;
+      throw error6;
     }
     options.logger?.info(
       brightBlue(
@@ -7366,9 +7366,9 @@ var UpgradeCommand = class extends Command {
             logger,
             ...options
           });
-        } catch (error5) {
+        } catch (error6) {
           logger.error(
-            !verbose && error5 instanceof Error ? error5.message : error5
+            !verbose && error6 instanceof Error ? error6.message : error6
           );
           spinner?.stop();
           exit(1);
@@ -7409,8 +7409,8 @@ var JsrProvider = class extends Provider {
   repositoryUrl = "https://jsr.io/";
   packageName;
   packageScope;
-  constructor({ main, logger, ...options }) {
-    super({ main, logger });
+  constructor({ main: main2, logger, ...options }) {
+    super({ main: main2, logger });
     this.packageScope = "package" in options ? options.package.split("/")[0].slice(1) : options.scope;
     this.packageName = "package" in options ? options.package.split("/")[1] : options.name;
   }
@@ -7711,9 +7711,9 @@ var HastEmitter = class {
 
 // ../../../../../.cache/deno/deno_esbuild/registry.npmjs.org/chalk@5.3.0/node_modules/chalk/source/vendor/ansi-styles/index.js
 var ANSI_BACKGROUND_OFFSET = 10;
-var wrapAnsi16 = (offset = 0) => (code2) => `\x1B[${code2 + offset}m`;
-var wrapAnsi256 = (offset = 0) => (code2) => `\x1B[${38 + offset};5;${code2}m`;
-var wrapAnsi16m = (offset = 0) => (red2, green2, blue2) => `\x1B[${38 + offset};2;${red2};${green2};${blue2}m`;
+var wrapAnsi16 = (offset = 0) => (code3) => `\x1B[${code3 + offset}m`;
+var wrapAnsi256 = (offset = 0) => (code3) => `\x1B[${38 + offset};5;${code3}m`;
+var wrapAnsi16m = (offset = 0) => (red3, green3, blue2) => `\x1B[${38 + offset};2;${red3};${green3};${blue2}m`;
 var styles = {
   modifier: {
     reset: [0, 0],
@@ -7808,17 +7808,17 @@ function assembleStyles() {
   styles.bgColor.ansi16m = wrapAnsi16m(ANSI_BACKGROUND_OFFSET);
   Object.defineProperties(styles, {
     rgbToAnsi256: {
-      value(red2, green2, blue2) {
-        if (red2 === green2 && green2 === blue2) {
-          if (red2 < 8) {
+      value(red3, green3, blue2) {
+        if (red3 === green3 && green3 === blue2) {
+          if (red3 < 8) {
             return 16;
           }
-          if (red2 > 248) {
+          if (red3 > 248) {
             return 231;
           }
-          return Math.round((red2 - 8) / 247 * 24) + 232;
+          return Math.round((red3 - 8) / 247 * 24) + 232;
         }
-        return 16 + 36 * Math.round(red2 / 255 * 5) + 6 * Math.round(green2 / 255 * 5) + Math.round(blue2 / 255 * 5);
+        return 16 + 36 * Math.round(red3 / 255 * 5) + 6 * Math.round(green3 / 255 * 5) + Math.round(blue2 / 255 * 5);
       },
       enumerable: false
     },
@@ -7848,32 +7848,32 @@ function assembleStyles() {
       enumerable: false
     },
     ansi256ToAnsi: {
-      value(code2) {
-        if (code2 < 8) {
-          return 30 + code2;
+      value(code3) {
+        if (code3 < 8) {
+          return 30 + code3;
         }
-        if (code2 < 16) {
-          return 90 + (code2 - 8);
+        if (code3 < 16) {
+          return 90 + (code3 - 8);
         }
-        let red2;
-        let green2;
+        let red3;
+        let green3;
         let blue2;
-        if (code2 >= 232) {
-          red2 = ((code2 - 232) * 10 + 8) / 255;
-          green2 = red2;
-          blue2 = red2;
+        if (code3 >= 232) {
+          red3 = ((code3 - 232) * 10 + 8) / 255;
+          green3 = red3;
+          blue2 = red3;
         } else {
-          code2 -= 16;
-          const remainder = code2 % 36;
-          red2 = Math.floor(code2 / 36) / 5;
-          green2 = Math.floor(remainder / 6) / 5;
+          code3 -= 16;
+          const remainder = code3 % 36;
+          red3 = Math.floor(code3 / 36) / 5;
+          green3 = Math.floor(remainder / 6) / 5;
           blue2 = remainder % 6 / 5;
         }
-        const value = Math.max(red2, green2, blue2) * 2;
+        const value = Math.max(red3, green3, blue2) * 2;
         if (value === 0) {
           return 30;
         }
-        let result = 30 + (Math.round(blue2) << 2 | Math.round(green2) << 1 | Math.round(red2));
+        let result = 30 + (Math.round(blue2) << 2 | Math.round(green3) << 1 | Math.round(red3));
         if (value === 2) {
           result += 60;
         }
@@ -7882,7 +7882,7 @@ function assembleStyles() {
       enumerable: false
     },
     rgbToAnsi: {
-      value: (red2, green2, blue2) => styles.ansi256ToAnsi(styles.rgbToAnsi256(red2, green2, blue2)),
+      value: (red3, green3, blue2) => styles.ansi256ToAnsi(styles.rgbToAnsi256(red3, green3, blue2)),
       enumerable: false
     },
     hexToAnsi: {
@@ -8284,15 +8284,15 @@ if (!ashishdotmeToken) {
   console.error("ASHISHDOTME_TOKEN is required");
   Deno.exit(1);
 }
-async function callApi(path, options) {
-  const apiURL = Deno.env.get("ASHISHDOTME_API_URL") || "https://api.ashish.me";
+async function callApi(path3, api, options) {
+  const apiURL = api || "https://api.ashish.me";
   const headers = {
     ...options?.headers,
     apiKey: `${ashishdotmeToken}`
   };
   if (options?.paginate) {
     const data = [];
-    let url = new URL(`${apiURL}${path}`);
+    let url = new URL(`${apiURL}${path3}`);
     url.searchParams.set("limit", "100");
     while (true) {
       const resp = await fetch(url, {
@@ -8315,12 +8315,12 @@ async function callApi(path, options) {
       }
     });
   }
-  return await fetch(`${apiURL}${path}`, {
+  return await fetch(`${apiURL}${path3}`, {
     ...options,
     headers
   });
 }
-async function callJobsApi(path, options) {
+async function callJobsApi(path3, options) {
   const apiURL = Deno.env.get("ASHISHDOTME_API_URL") || "https://jobsapi.ashish.me";
   const headers = {
     ...options?.headers,
@@ -8328,7 +8328,7 @@ async function callJobsApi(path, options) {
   };
   if (options?.paginate) {
     const data = [];
-    let url = new URL(`${apiURL}${path}`);
+    let url = new URL(`${apiURL}${path3}`);
     url.searchParams.set("limit", "100");
     while (true) {
       const resp = await fetch(url, {
@@ -8351,7 +8351,7 @@ async function callJobsApi(path, options) {
       }
     });
   }
-  return await fetch(`${apiURL}${path}`, {
+  return await fetch(`${apiURL}${path3}`, {
     ...options,
     headers
   });
@@ -9269,11 +9269,11 @@ function getTimezoneOffsetInMilliseconds(date) {
 
 // ../../../../../.cache/deno/deno_esbuild/registry.npmjs.org/date-fns@4.1.0/node_modules/date-fns/_lib/normalizeDates.js
 function normalizeDates(context, ...dates) {
-  const normalize = constructFrom.bind(
+  const normalize5 = constructFrom.bind(
     null,
     context || dates.find((date) => typeof date === "object")
   );
-  return dates.map(normalize);
+  return dates.map(normalize5);
 }
 
 // ../../../../../.cache/deno/deno_esbuild/registry.npmjs.org/date-fns@4.1.0/node_modules/date-fns/startOfDay.js
@@ -9412,8 +9412,8 @@ var formatDistance = (token, count, options) => {
 function buildFormatLongFn(args) {
   return (options = {}) => {
     const width = options.width ? String(options.width) : args.defaultWidth;
-    const format3 = args.formats[width] || args.formats[args.defaultWidth];
-    return format3;
+    const format6 = args.formats[width] || args.formats[args.defaultWidth];
+    return format6;
   };
 }
 
@@ -10514,7 +10514,7 @@ var formatters = {
     return addLeadingZeros(+date, token.length);
   }
 };
-function formatTimezoneShort(offset, delimiter = "") {
+function formatTimezoneShort(offset, delimiter4 = "") {
   const sign = offset > 0 ? "-" : "+";
   const absOffset = Math.abs(offset);
   const hours = Math.trunc(absOffset / 60);
@@ -10522,21 +10522,21 @@ function formatTimezoneShort(offset, delimiter = "") {
   if (minutes === 0) {
     return sign + String(hours);
   }
-  return sign + String(hours) + delimiter + addLeadingZeros(minutes, 2);
+  return sign + String(hours) + delimiter4 + addLeadingZeros(minutes, 2);
 }
-function formatTimezoneWithOptionalMinutes(offset, delimiter) {
+function formatTimezoneWithOptionalMinutes(offset, delimiter4) {
   if (offset % 60 === 0) {
     const sign = offset > 0 ? "-" : "+";
     return sign + addLeadingZeros(Math.abs(offset) / 60, 2);
   }
-  return formatTimezone(offset, delimiter);
+  return formatTimezone(offset, delimiter4);
 }
-function formatTimezone(offset, delimiter = "") {
+function formatTimezone(offset, delimiter4 = "") {
   const sign = offset > 0 ? "-" : "+";
   const absOffset = Math.abs(offset);
   const hours = addLeadingZeros(Math.trunc(absOffset / 60), 2);
   const minutes = addLeadingZeros(absOffset % 60, 2);
-  return sign + hours + delimiter + minutes;
+  return sign + hours + delimiter4 + minutes;
 }
 
 // ../../../../../.cache/deno/deno_esbuild/registry.npmjs.org/date-fns@4.1.0/node_modules/date-fns/_lib/format/longFormatters.js
@@ -10606,15 +10606,15 @@ function isProtectedDayOfYearToken(token) {
 function isProtectedWeekYearToken(token) {
   return weekYearTokenRE.test(token);
 }
-function warnOrThrowProtectedError(token, format3, input) {
-  const _message = message(token, format3, input);
+function warnOrThrowProtectedError(token, format6, input) {
+  const _message = message(token, format6, input);
   console.warn(_message);
   if (throwTokens.includes(token))
     throw new RangeError(_message);
 }
-function message(token, format3, input) {
+function message(token, format6, input) {
   const subject = token[0] === "Y" ? "years" : "days of the month";
-  return `Use \`${token.toLowerCase()}\` instead of \`${token}\` (in \`${format3}\`) for formatting ${subject} to the input \`${input}\`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md`;
+  return `Use \`${token.toLowerCase()}\` instead of \`${token}\` (in \`${format6}\`) for formatting ${subject} to the input \`${input}\`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md`;
 }
 
 // ../../../../../.cache/deno/deno_esbuild/registry.npmjs.org/date-fns@4.1.0/node_modules/date-fns/format.js
@@ -10684,34 +10684,2729 @@ function cleanEscapedString(input) {
   return matched[1].replace(doubleQuoteRegExp, "'");
 }
 
-// src/ap.ts
+// https://deno.land/std@0.196.0/fmt/colors.ts
+var { Deno: Deno3 } = globalThis;
+var noColor2 = typeof Deno3?.noColor === "boolean" ? Deno3.noColor : false;
+var enabled2 = !noColor2;
+function code2(open, close) {
+  return {
+    open: `\x1B[${open.join(";")}m`,
+    close: `\x1B[${close}m`,
+    regexp: new RegExp(`\\x1b\\[${close}m`, "g")
+  };
+}
+function run2(str, code3) {
+  return enabled2 ? `${code3.open}${str.replace(code3.regexp, code3.open)}${code3.close}` : str;
+}
+function bold2(str) {
+  return run2(str, code2([1], 22));
+}
+function dim2(str) {
+  return run2(str, code2([2], 22));
+}
+function italic2(str) {
+  return run2(str, code2([3], 23));
+}
+function underline2(str) {
+  return run2(str, code2([4], 24));
+}
+function red2(str) {
+  return run2(str, code2([31], 39));
+}
+function green2(str) {
+  return run2(str, code2([32], 39));
+}
+function yellow2(str) {
+  return run2(str, code2([33], 39));
+}
+function brightBlue2(str) {
+  return run2(str, code2([94], 39));
+}
+var ANSI_PATTERN2 = new RegExp(
+  [
+    "[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?\\u0007)",
+    "(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))"
+  ].join("|"),
+  "g"
+);
+function stripColor2(string2) {
+  return string2.replace(ANSI_PATTERN2, "");
+}
+
+// https://deno.land/std@0.196.0/_util/os.ts
+var osType = (() => {
+  const { Deno: Deno4 } = globalThis;
+  if (typeof Deno4?.build?.os === "string") {
+    return Deno4.build.os;
+  }
+  const { navigator: navigator2 } = globalThis;
+  if (navigator2?.appVersion?.includes?.("Win")) {
+    return "windows";
+  }
+  return "linux";
+})();
+var isWindows = osType === "windows";
+
+// https://deno.land/std@0.196.0/path/win32.ts
+var win32_exports = {};
+__export(win32_exports, {
+  basename: () => basename,
+  delimiter: () => delimiter,
+  dirname: () => dirname,
+  extname: () => extname,
+  format: () => format3,
+  fromFileUrl: () => fromFileUrl,
+  isAbsolute: () => isAbsolute,
+  join: () => join,
+  normalize: () => normalize,
+  parse: () => parse,
+  relative: () => relative,
+  resolve: () => resolve,
+  sep: () => sep,
+  toFileUrl: () => toFileUrl,
+  toNamespacedPath: () => toNamespacedPath
+});
+
+// https://deno.land/std@0.196.0/path/_constants.ts
+var CHAR_UPPERCASE_A = 65;
+var CHAR_LOWERCASE_A = 97;
+var CHAR_UPPERCASE_Z = 90;
+var CHAR_LOWERCASE_Z = 122;
+var CHAR_DOT = 46;
+var CHAR_FORWARD_SLASH = 47;
+var CHAR_BACKWARD_SLASH = 92;
+var CHAR_COLON = 58;
+var CHAR_QUESTION_MARK = 63;
+
+// https://deno.land/std@0.196.0/path/_util.ts
+function assertPath(path3) {
+  if (typeof path3 !== "string") {
+    throw new TypeError(
+      `Path must be a string. Received ${JSON.stringify(path3)}`
+    );
+  }
+}
+function isPosixPathSeparator(code3) {
+  return code3 === CHAR_FORWARD_SLASH;
+}
+function isPathSeparator(code3) {
+  return isPosixPathSeparator(code3) || code3 === CHAR_BACKWARD_SLASH;
+}
+function isWindowsDeviceRoot(code3) {
+  return code3 >= CHAR_LOWERCASE_A && code3 <= CHAR_LOWERCASE_Z || code3 >= CHAR_UPPERCASE_A && code3 <= CHAR_UPPERCASE_Z;
+}
+function normalizeString(path3, allowAboveRoot, separator, isPathSeparator2) {
+  let res = "";
+  let lastSegmentLength = 0;
+  let lastSlash = -1;
+  let dots = 0;
+  let code3;
+  for (let i = 0, len = path3.length; i <= len; ++i) {
+    if (i < len)
+      code3 = path3.charCodeAt(i);
+    else if (isPathSeparator2(code3))
+      break;
+    else
+      code3 = CHAR_FORWARD_SLASH;
+    if (isPathSeparator2(code3)) {
+      if (lastSlash === i - 1 || dots === 1) {
+      } else if (lastSlash !== i - 1 && dots === 2) {
+        if (res.length < 2 || lastSegmentLength !== 2 || res.charCodeAt(res.length - 1) !== CHAR_DOT || res.charCodeAt(res.length - 2) !== CHAR_DOT) {
+          if (res.length > 2) {
+            const lastSlashIndex = res.lastIndexOf(separator);
+            if (lastSlashIndex === -1) {
+              res = "";
+              lastSegmentLength = 0;
+            } else {
+              res = res.slice(0, lastSlashIndex);
+              lastSegmentLength = res.length - 1 - res.lastIndexOf(separator);
+            }
+            lastSlash = i;
+            dots = 0;
+            continue;
+          } else if (res.length === 2 || res.length === 1) {
+            res = "";
+            lastSegmentLength = 0;
+            lastSlash = i;
+            dots = 0;
+            continue;
+          }
+        }
+        if (allowAboveRoot) {
+          if (res.length > 0)
+            res += `${separator}..`;
+          else
+            res = "..";
+          lastSegmentLength = 2;
+        }
+      } else {
+        if (res.length > 0)
+          res += separator + path3.slice(lastSlash + 1, i);
+        else
+          res = path3.slice(lastSlash + 1, i);
+        lastSegmentLength = i - lastSlash - 1;
+      }
+      lastSlash = i;
+      dots = 0;
+    } else if (code3 === CHAR_DOT && dots !== -1) {
+      ++dots;
+    } else {
+      dots = -1;
+    }
+  }
+  return res;
+}
+function _format(sep4, pathObject) {
+  const dir = pathObject.dir || pathObject.root;
+  const base = pathObject.base || (pathObject.name || "") + (pathObject.ext || "");
+  if (!dir)
+    return base;
+  if (base === sep4)
+    return dir;
+  if (dir === pathObject.root)
+    return dir + base;
+  return dir + sep4 + base;
+}
+var WHITESPACE_ENCODINGS = {
+  "	": "%09",
+  "\n": "%0A",
+  "\v": "%0B",
+  "\f": "%0C",
+  "\r": "%0D",
+  " ": "%20"
+};
+function encodeWhitespace(string2) {
+  return string2.replaceAll(/[\s]/g, (c) => {
+    return WHITESPACE_ENCODINGS[c] ?? c;
+  });
+}
+function lastPathSegment(path3, isSep, start = 0) {
+  let matchedNonSeparator = false;
+  let end = path3.length;
+  for (let i = path3.length - 1; i >= start; --i) {
+    if (isSep(path3.charCodeAt(i))) {
+      if (matchedNonSeparator) {
+        start = i + 1;
+        break;
+      }
+    } else if (!matchedNonSeparator) {
+      matchedNonSeparator = true;
+      end = i + 1;
+    }
+  }
+  return path3.slice(start, end);
+}
+function stripTrailingSeparators(segment, isSep) {
+  if (segment.length <= 1) {
+    return segment;
+  }
+  let end = segment.length;
+  for (let i = segment.length - 1; i > 0; i--) {
+    if (isSep(segment.charCodeAt(i))) {
+      end = i;
+    } else {
+      break;
+    }
+  }
+  return segment.slice(0, end);
+}
+function stripSuffix(name, suffix) {
+  if (suffix.length >= name.length) {
+    return name;
+  }
+  const lenDiff = name.length - suffix.length;
+  for (let i = suffix.length - 1; i >= 0; --i) {
+    if (name.charCodeAt(lenDiff + i) !== suffix.charCodeAt(i)) {
+      return name;
+    }
+  }
+  return name.slice(0, -suffix.length);
+}
+
+// https://deno.land/std@0.196.0/assert/assertion_error.ts
+var AssertionError = class extends Error {
+  name = "AssertionError";
+  constructor(message2) {
+    super(message2);
+  }
+};
+
+// https://deno.land/std@0.196.0/assert/assert.ts
+function assert(expr, msg = "") {
+  if (!expr) {
+    throw new AssertionError(msg);
+  }
+}
+
+// https://deno.land/std@0.196.0/path/win32.ts
+var sep = "\\";
+var delimiter = ";";
+function resolve(...pathSegments) {
+  let resolvedDevice = "";
+  let resolvedTail = "";
+  let resolvedAbsolute = false;
+  for (let i = pathSegments.length - 1; i >= -1; i--) {
+    let path3;
+    const { Deno: Deno4 } = globalThis;
+    if (i >= 0) {
+      path3 = pathSegments[i];
+    } else if (!resolvedDevice) {
+      if (typeof Deno4?.cwd !== "function") {
+        throw new TypeError("Resolved a drive-letter-less path without a CWD.");
+      }
+      path3 = Deno4.cwd();
+    } else {
+      if (typeof Deno4?.env?.get !== "function" || typeof Deno4?.cwd !== "function") {
+        throw new TypeError("Resolved a relative path without a CWD.");
+      }
+      path3 = Deno4.cwd();
+      if (path3 === void 0 || path3.slice(0, 3).toLowerCase() !== `${resolvedDevice.toLowerCase()}\\`) {
+        path3 = `${resolvedDevice}\\`;
+      }
+    }
+    assertPath(path3);
+    const len = path3.length;
+    if (len === 0)
+      continue;
+    let rootEnd = 0;
+    let device = "";
+    let isAbsolute4 = false;
+    const code3 = path3.charCodeAt(0);
+    if (len > 1) {
+      if (isPathSeparator(code3)) {
+        isAbsolute4 = true;
+        if (isPathSeparator(path3.charCodeAt(1))) {
+          let j = 2;
+          let last = j;
+          for (; j < len; ++j) {
+            if (isPathSeparator(path3.charCodeAt(j)))
+              break;
+          }
+          if (j < len && j !== last) {
+            const firstPart = path3.slice(last, j);
+            last = j;
+            for (; j < len; ++j) {
+              if (!isPathSeparator(path3.charCodeAt(j)))
+                break;
+            }
+            if (j < len && j !== last) {
+              last = j;
+              for (; j < len; ++j) {
+                if (isPathSeparator(path3.charCodeAt(j)))
+                  break;
+              }
+              if (j === len) {
+                device = `\\\\${firstPart}\\${path3.slice(last)}`;
+                rootEnd = j;
+              } else if (j !== last) {
+                device = `\\\\${firstPart}\\${path3.slice(last, j)}`;
+                rootEnd = j;
+              }
+            }
+          }
+        } else {
+          rootEnd = 1;
+        }
+      } else if (isWindowsDeviceRoot(code3)) {
+        if (path3.charCodeAt(1) === CHAR_COLON) {
+          device = path3.slice(0, 2);
+          rootEnd = 2;
+          if (len > 2) {
+            if (isPathSeparator(path3.charCodeAt(2))) {
+              isAbsolute4 = true;
+              rootEnd = 3;
+            }
+          }
+        }
+      }
+    } else if (isPathSeparator(code3)) {
+      rootEnd = 1;
+      isAbsolute4 = true;
+    }
+    if (device.length > 0 && resolvedDevice.length > 0 && device.toLowerCase() !== resolvedDevice.toLowerCase()) {
+      continue;
+    }
+    if (resolvedDevice.length === 0 && device.length > 0) {
+      resolvedDevice = device;
+    }
+    if (!resolvedAbsolute) {
+      resolvedTail = `${path3.slice(rootEnd)}\\${resolvedTail}`;
+      resolvedAbsolute = isAbsolute4;
+    }
+    if (resolvedAbsolute && resolvedDevice.length > 0)
+      break;
+  }
+  resolvedTail = normalizeString(
+    resolvedTail,
+    !resolvedAbsolute,
+    "\\",
+    isPathSeparator
+  );
+  return resolvedDevice + (resolvedAbsolute ? "\\" : "") + resolvedTail || ".";
+}
+function normalize(path3) {
+  assertPath(path3);
+  const len = path3.length;
+  if (len === 0)
+    return ".";
+  let rootEnd = 0;
+  let device;
+  let isAbsolute4 = false;
+  const code3 = path3.charCodeAt(0);
+  if (len > 1) {
+    if (isPathSeparator(code3)) {
+      isAbsolute4 = true;
+      if (isPathSeparator(path3.charCodeAt(1))) {
+        let j = 2;
+        let last = j;
+        for (; j < len; ++j) {
+          if (isPathSeparator(path3.charCodeAt(j)))
+            break;
+        }
+        if (j < len && j !== last) {
+          const firstPart = path3.slice(last, j);
+          last = j;
+          for (; j < len; ++j) {
+            if (!isPathSeparator(path3.charCodeAt(j)))
+              break;
+          }
+          if (j < len && j !== last) {
+            last = j;
+            for (; j < len; ++j) {
+              if (isPathSeparator(path3.charCodeAt(j)))
+                break;
+            }
+            if (j === len) {
+              return `\\\\${firstPart}\\${path3.slice(last)}\\`;
+            } else if (j !== last) {
+              device = `\\\\${firstPart}\\${path3.slice(last, j)}`;
+              rootEnd = j;
+            }
+          }
+        }
+      } else {
+        rootEnd = 1;
+      }
+    } else if (isWindowsDeviceRoot(code3)) {
+      if (path3.charCodeAt(1) === CHAR_COLON) {
+        device = path3.slice(0, 2);
+        rootEnd = 2;
+        if (len > 2) {
+          if (isPathSeparator(path3.charCodeAt(2))) {
+            isAbsolute4 = true;
+            rootEnd = 3;
+          }
+        }
+      }
+    }
+  } else if (isPathSeparator(code3)) {
+    return "\\";
+  }
+  let tail;
+  if (rootEnd < len) {
+    tail = normalizeString(
+      path3.slice(rootEnd),
+      !isAbsolute4,
+      "\\",
+      isPathSeparator
+    );
+  } else {
+    tail = "";
+  }
+  if (tail.length === 0 && !isAbsolute4)
+    tail = ".";
+  if (tail.length > 0 && isPathSeparator(path3.charCodeAt(len - 1))) {
+    tail += "\\";
+  }
+  if (device === void 0) {
+    if (isAbsolute4) {
+      if (tail.length > 0)
+        return `\\${tail}`;
+      else
+        return "\\";
+    } else if (tail.length > 0) {
+      return tail;
+    } else {
+      return "";
+    }
+  } else if (isAbsolute4) {
+    if (tail.length > 0)
+      return `${device}\\${tail}`;
+    else
+      return `${device}\\`;
+  } else if (tail.length > 0) {
+    return device + tail;
+  } else {
+    return device;
+  }
+}
+function isAbsolute(path3) {
+  assertPath(path3);
+  const len = path3.length;
+  if (len === 0)
+    return false;
+  const code3 = path3.charCodeAt(0);
+  if (isPathSeparator(code3)) {
+    return true;
+  } else if (isWindowsDeviceRoot(code3)) {
+    if (len > 2 && path3.charCodeAt(1) === CHAR_COLON) {
+      if (isPathSeparator(path3.charCodeAt(2)))
+        return true;
+    }
+  }
+  return false;
+}
+function join(...paths) {
+  const pathsCount = paths.length;
+  if (pathsCount === 0)
+    return ".";
+  let joined;
+  let firstPart = null;
+  for (let i = 0; i < pathsCount; ++i) {
+    const path3 = paths[i];
+    assertPath(path3);
+    if (path3.length > 0) {
+      if (joined === void 0)
+        joined = firstPart = path3;
+      else
+        joined += `\\${path3}`;
+    }
+  }
+  if (joined === void 0)
+    return ".";
+  let needsReplace = true;
+  let slashCount = 0;
+  assert(firstPart != null);
+  if (isPathSeparator(firstPart.charCodeAt(0))) {
+    ++slashCount;
+    const firstLen = firstPart.length;
+    if (firstLen > 1) {
+      if (isPathSeparator(firstPart.charCodeAt(1))) {
+        ++slashCount;
+        if (firstLen > 2) {
+          if (isPathSeparator(firstPart.charCodeAt(2)))
+            ++slashCount;
+          else {
+            needsReplace = false;
+          }
+        }
+      }
+    }
+  }
+  if (needsReplace) {
+    for (; slashCount < joined.length; ++slashCount) {
+      if (!isPathSeparator(joined.charCodeAt(slashCount)))
+        break;
+    }
+    if (slashCount >= 2)
+      joined = `\\${joined.slice(slashCount)}`;
+  }
+  return normalize(joined);
+}
+function relative(from, to) {
+  assertPath(from);
+  assertPath(to);
+  if (from === to)
+    return "";
+  const fromOrig = resolve(from);
+  const toOrig = resolve(to);
+  if (fromOrig === toOrig)
+    return "";
+  from = fromOrig.toLowerCase();
+  to = toOrig.toLowerCase();
+  if (from === to)
+    return "";
+  let fromStart = 0;
+  let fromEnd = from.length;
+  for (; fromStart < fromEnd; ++fromStart) {
+    if (from.charCodeAt(fromStart) !== CHAR_BACKWARD_SLASH)
+      break;
+  }
+  for (; fromEnd - 1 > fromStart; --fromEnd) {
+    if (from.charCodeAt(fromEnd - 1) !== CHAR_BACKWARD_SLASH)
+      break;
+  }
+  const fromLen = fromEnd - fromStart;
+  let toStart = 0;
+  let toEnd = to.length;
+  for (; toStart < toEnd; ++toStart) {
+    if (to.charCodeAt(toStart) !== CHAR_BACKWARD_SLASH)
+      break;
+  }
+  for (; toEnd - 1 > toStart; --toEnd) {
+    if (to.charCodeAt(toEnd - 1) !== CHAR_BACKWARD_SLASH)
+      break;
+  }
+  const toLen = toEnd - toStart;
+  const length = fromLen < toLen ? fromLen : toLen;
+  let lastCommonSep = -1;
+  let i = 0;
+  for (; i <= length; ++i) {
+    if (i === length) {
+      if (toLen > length) {
+        if (to.charCodeAt(toStart + i) === CHAR_BACKWARD_SLASH) {
+          return toOrig.slice(toStart + i + 1);
+        } else if (i === 2) {
+          return toOrig.slice(toStart + i);
+        }
+      }
+      if (fromLen > length) {
+        if (from.charCodeAt(fromStart + i) === CHAR_BACKWARD_SLASH) {
+          lastCommonSep = i;
+        } else if (i === 2) {
+          lastCommonSep = 3;
+        }
+      }
+      break;
+    }
+    const fromCode = from.charCodeAt(fromStart + i);
+    const toCode = to.charCodeAt(toStart + i);
+    if (fromCode !== toCode)
+      break;
+    else if (fromCode === CHAR_BACKWARD_SLASH)
+      lastCommonSep = i;
+  }
+  if (i !== length && lastCommonSep === -1) {
+    return toOrig;
+  }
+  let out = "";
+  if (lastCommonSep === -1)
+    lastCommonSep = 0;
+  for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
+    if (i === fromEnd || from.charCodeAt(i) === CHAR_BACKWARD_SLASH) {
+      if (out.length === 0)
+        out += "..";
+      else
+        out += "\\..";
+    }
+  }
+  if (out.length > 0) {
+    return out + toOrig.slice(toStart + lastCommonSep, toEnd);
+  } else {
+    toStart += lastCommonSep;
+    if (toOrig.charCodeAt(toStart) === CHAR_BACKWARD_SLASH)
+      ++toStart;
+    return toOrig.slice(toStart, toEnd);
+  }
+}
+function toNamespacedPath(path3) {
+  if (typeof path3 !== "string")
+    return path3;
+  if (path3.length === 0)
+    return "";
+  const resolvedPath = resolve(path3);
+  if (resolvedPath.length >= 3) {
+    if (resolvedPath.charCodeAt(0) === CHAR_BACKWARD_SLASH) {
+      if (resolvedPath.charCodeAt(1) === CHAR_BACKWARD_SLASH) {
+        const code3 = resolvedPath.charCodeAt(2);
+        if (code3 !== CHAR_QUESTION_MARK && code3 !== CHAR_DOT) {
+          return `\\\\?\\UNC\\${resolvedPath.slice(2)}`;
+        }
+      }
+    } else if (isWindowsDeviceRoot(resolvedPath.charCodeAt(0))) {
+      if (resolvedPath.charCodeAt(1) === CHAR_COLON && resolvedPath.charCodeAt(2) === CHAR_BACKWARD_SLASH) {
+        return `\\\\?\\${resolvedPath}`;
+      }
+    }
+  }
+  return path3;
+}
+function dirname(path3) {
+  assertPath(path3);
+  const len = path3.length;
+  if (len === 0)
+    return ".";
+  let rootEnd = -1;
+  let end = -1;
+  let matchedSlash = true;
+  let offset = 0;
+  const code3 = path3.charCodeAt(0);
+  if (len > 1) {
+    if (isPathSeparator(code3)) {
+      rootEnd = offset = 1;
+      if (isPathSeparator(path3.charCodeAt(1))) {
+        let j = 2;
+        let last = j;
+        for (; j < len; ++j) {
+          if (isPathSeparator(path3.charCodeAt(j)))
+            break;
+        }
+        if (j < len && j !== last) {
+          last = j;
+          for (; j < len; ++j) {
+            if (!isPathSeparator(path3.charCodeAt(j)))
+              break;
+          }
+          if (j < len && j !== last) {
+            last = j;
+            for (; j < len; ++j) {
+              if (isPathSeparator(path3.charCodeAt(j)))
+                break;
+            }
+            if (j === len) {
+              return path3;
+            }
+            if (j !== last) {
+              rootEnd = offset = j + 1;
+            }
+          }
+        }
+      }
+    } else if (isWindowsDeviceRoot(code3)) {
+      if (path3.charCodeAt(1) === CHAR_COLON) {
+        rootEnd = offset = 2;
+        if (len > 2) {
+          if (isPathSeparator(path3.charCodeAt(2)))
+            rootEnd = offset = 3;
+        }
+      }
+    }
+  } else if (isPathSeparator(code3)) {
+    return path3;
+  }
+  for (let i = len - 1; i >= offset; --i) {
+    if (isPathSeparator(path3.charCodeAt(i))) {
+      if (!matchedSlash) {
+        end = i;
+        break;
+      }
+    } else {
+      matchedSlash = false;
+    }
+  }
+  if (end === -1) {
+    if (rootEnd === -1)
+      return ".";
+    else
+      end = rootEnd;
+  }
+  return stripTrailingSeparators(path3.slice(0, end), isPosixPathSeparator);
+}
+function basename(path3, suffix = "") {
+  assertPath(path3);
+  if (path3.length === 0)
+    return path3;
+  if (typeof suffix !== "string") {
+    throw new TypeError(
+      `Suffix must be a string. Received ${JSON.stringify(suffix)}`
+    );
+  }
+  let start = 0;
+  if (path3.length >= 2) {
+    const drive = path3.charCodeAt(0);
+    if (isWindowsDeviceRoot(drive)) {
+      if (path3.charCodeAt(1) === CHAR_COLON)
+        start = 2;
+    }
+  }
+  const lastSegment = lastPathSegment(path3, isPathSeparator, start);
+  const strippedSegment = stripTrailingSeparators(lastSegment, isPathSeparator);
+  return suffix ? stripSuffix(strippedSegment, suffix) : strippedSegment;
+}
+function extname(path3) {
+  assertPath(path3);
+  let start = 0;
+  let startDot = -1;
+  let startPart = 0;
+  let end = -1;
+  let matchedSlash = true;
+  let preDotState = 0;
+  if (path3.length >= 2 && path3.charCodeAt(1) === CHAR_COLON && isWindowsDeviceRoot(path3.charCodeAt(0))) {
+    start = startPart = 2;
+  }
+  for (let i = path3.length - 1; i >= start; --i) {
+    const code3 = path3.charCodeAt(i);
+    if (isPathSeparator(code3)) {
+      if (!matchedSlash) {
+        startPart = i + 1;
+        break;
+      }
+      continue;
+    }
+    if (end === -1) {
+      matchedSlash = false;
+      end = i + 1;
+    }
+    if (code3 === CHAR_DOT) {
+      if (startDot === -1)
+        startDot = i;
+      else if (preDotState !== 1)
+        preDotState = 1;
+    } else if (startDot !== -1) {
+      preDotState = -1;
+    }
+  }
+  if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
+  preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
+  preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+    return "";
+  }
+  return path3.slice(startDot, end);
+}
+function format3(pathObject) {
+  if (pathObject === null || typeof pathObject !== "object") {
+    throw new TypeError(
+      `The "pathObject" argument must be of type Object. Received type ${typeof pathObject}`
+    );
+  }
+  return _format("\\", pathObject);
+}
+function parse(path3) {
+  assertPath(path3);
+  const ret = { root: "", dir: "", base: "", ext: "", name: "" };
+  const len = path3.length;
+  if (len === 0)
+    return ret;
+  let rootEnd = 0;
+  let code3 = path3.charCodeAt(0);
+  if (len > 1) {
+    if (isPathSeparator(code3)) {
+      rootEnd = 1;
+      if (isPathSeparator(path3.charCodeAt(1))) {
+        let j = 2;
+        let last = j;
+        for (; j < len; ++j) {
+          if (isPathSeparator(path3.charCodeAt(j)))
+            break;
+        }
+        if (j < len && j !== last) {
+          last = j;
+          for (; j < len; ++j) {
+            if (!isPathSeparator(path3.charCodeAt(j)))
+              break;
+          }
+          if (j < len && j !== last) {
+            last = j;
+            for (; j < len; ++j) {
+              if (isPathSeparator(path3.charCodeAt(j)))
+                break;
+            }
+            if (j === len) {
+              rootEnd = j;
+            } else if (j !== last) {
+              rootEnd = j + 1;
+            }
+          }
+        }
+      }
+    } else if (isWindowsDeviceRoot(code3)) {
+      if (path3.charCodeAt(1) === CHAR_COLON) {
+        rootEnd = 2;
+        if (len > 2) {
+          if (isPathSeparator(path3.charCodeAt(2))) {
+            if (len === 3) {
+              ret.root = ret.dir = path3;
+              ret.base = "\\";
+              return ret;
+            }
+            rootEnd = 3;
+          }
+        } else {
+          ret.root = ret.dir = path3;
+          return ret;
+        }
+      }
+    }
+  } else if (isPathSeparator(code3)) {
+    ret.root = ret.dir = path3;
+    ret.base = "\\";
+    return ret;
+  }
+  if (rootEnd > 0)
+    ret.root = path3.slice(0, rootEnd);
+  let startDot = -1;
+  let startPart = rootEnd;
+  let end = -1;
+  let matchedSlash = true;
+  let i = path3.length - 1;
+  let preDotState = 0;
+  for (; i >= rootEnd; --i) {
+    code3 = path3.charCodeAt(i);
+    if (isPathSeparator(code3)) {
+      if (!matchedSlash) {
+        startPart = i + 1;
+        break;
+      }
+      continue;
+    }
+    if (end === -1) {
+      matchedSlash = false;
+      end = i + 1;
+    }
+    if (code3 === CHAR_DOT) {
+      if (startDot === -1)
+        startDot = i;
+      else if (preDotState !== 1)
+        preDotState = 1;
+    } else if (startDot !== -1) {
+      preDotState = -1;
+    }
+  }
+  if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
+  preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
+  preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+    if (end !== -1) {
+      ret.base = ret.name = path3.slice(startPart, end);
+    }
+  } else {
+    ret.name = path3.slice(startPart, startDot);
+    ret.base = path3.slice(startPart, end);
+    ret.ext = path3.slice(startDot, end);
+  }
+  ret.base = ret.base || "\\";
+  if (startPart > 0 && startPart !== rootEnd) {
+    ret.dir = path3.slice(0, startPart - 1);
+  } else
+    ret.dir = ret.root;
+  return ret;
+}
+function fromFileUrl(url) {
+  url = url instanceof URL ? url : new URL(url);
+  if (url.protocol != "file:") {
+    throw new TypeError("Must be a file URL.");
+  }
+  let path3 = decodeURIComponent(
+    url.pathname.replace(/\//g, "\\").replace(/%(?![0-9A-Fa-f]{2})/g, "%25")
+  ).replace(/^\\*([A-Za-z]:)(\\|$)/, "$1\\");
+  if (url.hostname != "") {
+    path3 = `\\\\${url.hostname}${path3}`;
+  }
+  return path3;
+}
+function toFileUrl(path3) {
+  if (!isAbsolute(path3)) {
+    throw new TypeError("Must be an absolute path.");
+  }
+  const [, hostname, pathname] = path3.match(
+    /^(?:[/\\]{2}([^/\\]+)(?=[/\\](?:[^/\\]|$)))?(.*)/
+  );
+  const url = new URL("file:///");
+  url.pathname = encodeWhitespace(pathname.replace(/%/g, "%25"));
+  if (hostname != null && hostname != "localhost") {
+    url.hostname = hostname;
+    if (!url.hostname) {
+      throw new TypeError("Invalid hostname.");
+    }
+  }
+  return url;
+}
+
+// https://deno.land/std@0.196.0/path/posix.ts
+var posix_exports = {};
+__export(posix_exports, {
+  basename: () => basename2,
+  delimiter: () => delimiter2,
+  dirname: () => dirname2,
+  extname: () => extname2,
+  format: () => format4,
+  fromFileUrl: () => fromFileUrl2,
+  isAbsolute: () => isAbsolute2,
+  join: () => join2,
+  normalize: () => normalize2,
+  parse: () => parse2,
+  relative: () => relative2,
+  resolve: () => resolve2,
+  sep: () => sep2,
+  toFileUrl: () => toFileUrl2,
+  toNamespacedPath: () => toNamespacedPath2
+});
+var sep2 = "/";
+var delimiter2 = ":";
+function resolve2(...pathSegments) {
+  let resolvedPath = "";
+  let resolvedAbsolute = false;
+  for (let i = pathSegments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    let path3;
+    if (i >= 0)
+      path3 = pathSegments[i];
+    else {
+      const { Deno: Deno4 } = globalThis;
+      if (typeof Deno4?.cwd !== "function") {
+        throw new TypeError("Resolved a relative path without a CWD.");
+      }
+      path3 = Deno4.cwd();
+    }
+    assertPath(path3);
+    if (path3.length === 0) {
+      continue;
+    }
+    resolvedPath = `${path3}/${resolvedPath}`;
+    resolvedAbsolute = isPosixPathSeparator(path3.charCodeAt(0));
+  }
+  resolvedPath = normalizeString(
+    resolvedPath,
+    !resolvedAbsolute,
+    "/",
+    isPosixPathSeparator
+  );
+  if (resolvedAbsolute) {
+    if (resolvedPath.length > 0)
+      return `/${resolvedPath}`;
+    else
+      return "/";
+  } else if (resolvedPath.length > 0)
+    return resolvedPath;
+  else
+    return ".";
+}
+function normalize2(path3) {
+  assertPath(path3);
+  if (path3.length === 0)
+    return ".";
+  const isAbsolute4 = isPosixPathSeparator(path3.charCodeAt(0));
+  const trailingSeparator = isPosixPathSeparator(
+    path3.charCodeAt(path3.length - 1)
+  );
+  path3 = normalizeString(path3, !isAbsolute4, "/", isPosixPathSeparator);
+  if (path3.length === 0 && !isAbsolute4)
+    path3 = ".";
+  if (path3.length > 0 && trailingSeparator)
+    path3 += "/";
+  if (isAbsolute4)
+    return `/${path3}`;
+  return path3;
+}
+function isAbsolute2(path3) {
+  assertPath(path3);
+  return path3.length > 0 && isPosixPathSeparator(path3.charCodeAt(0));
+}
+function join2(...paths) {
+  if (paths.length === 0)
+    return ".";
+  let joined;
+  for (let i = 0, len = paths.length; i < len; ++i) {
+    const path3 = paths[i];
+    assertPath(path3);
+    if (path3.length > 0) {
+      if (!joined)
+        joined = path3;
+      else
+        joined += `/${path3}`;
+    }
+  }
+  if (!joined)
+    return ".";
+  return normalize2(joined);
+}
+function relative2(from, to) {
+  assertPath(from);
+  assertPath(to);
+  if (from === to)
+    return "";
+  from = resolve2(from);
+  to = resolve2(to);
+  if (from === to)
+    return "";
+  let fromStart = 1;
+  const fromEnd = from.length;
+  for (; fromStart < fromEnd; ++fromStart) {
+    if (!isPosixPathSeparator(from.charCodeAt(fromStart)))
+      break;
+  }
+  const fromLen = fromEnd - fromStart;
+  let toStart = 1;
+  const toEnd = to.length;
+  for (; toStart < toEnd; ++toStart) {
+    if (!isPosixPathSeparator(to.charCodeAt(toStart)))
+      break;
+  }
+  const toLen = toEnd - toStart;
+  const length = fromLen < toLen ? fromLen : toLen;
+  let lastCommonSep = -1;
+  let i = 0;
+  for (; i <= length; ++i) {
+    if (i === length) {
+      if (toLen > length) {
+        if (isPosixPathSeparator(to.charCodeAt(toStart + i))) {
+          return to.slice(toStart + i + 1);
+        } else if (i === 0) {
+          return to.slice(toStart + i);
+        }
+      } else if (fromLen > length) {
+        if (isPosixPathSeparator(from.charCodeAt(fromStart + i))) {
+          lastCommonSep = i;
+        } else if (i === 0) {
+          lastCommonSep = 0;
+        }
+      }
+      break;
+    }
+    const fromCode = from.charCodeAt(fromStart + i);
+    const toCode = to.charCodeAt(toStart + i);
+    if (fromCode !== toCode)
+      break;
+    else if (isPosixPathSeparator(fromCode))
+      lastCommonSep = i;
+  }
+  let out = "";
+  for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
+    if (i === fromEnd || isPosixPathSeparator(from.charCodeAt(i))) {
+      if (out.length === 0)
+        out += "..";
+      else
+        out += "/..";
+    }
+  }
+  if (out.length > 0)
+    return out + to.slice(toStart + lastCommonSep);
+  else {
+    toStart += lastCommonSep;
+    if (isPosixPathSeparator(to.charCodeAt(toStart)))
+      ++toStart;
+    return to.slice(toStart);
+  }
+}
+function toNamespacedPath2(path3) {
+  return path3;
+}
+function dirname2(path3) {
+  if (path3.length === 0)
+    return ".";
+  let end = -1;
+  let matchedNonSeparator = false;
+  for (let i = path3.length - 1; i >= 1; --i) {
+    if (isPosixPathSeparator(path3.charCodeAt(i))) {
+      if (matchedNonSeparator) {
+        end = i;
+        break;
+      }
+    } else {
+      matchedNonSeparator = true;
+    }
+  }
+  if (end === -1) {
+    return isPosixPathSeparator(path3.charCodeAt(0)) ? "/" : ".";
+  }
+  return stripTrailingSeparators(
+    path3.slice(0, end),
+    isPosixPathSeparator
+  );
+}
+function basename2(path3, suffix = "") {
+  assertPath(path3);
+  if (path3.length === 0)
+    return path3;
+  if (typeof suffix !== "string") {
+    throw new TypeError(
+      `Suffix must be a string. Received ${JSON.stringify(suffix)}`
+    );
+  }
+  const lastSegment = lastPathSegment(path3, isPosixPathSeparator);
+  const strippedSegment = stripTrailingSeparators(
+    lastSegment,
+    isPosixPathSeparator
+  );
+  return suffix ? stripSuffix(strippedSegment, suffix) : strippedSegment;
+}
+function extname2(path3) {
+  assertPath(path3);
+  let startDot = -1;
+  let startPart = 0;
+  let end = -1;
+  let matchedSlash = true;
+  let preDotState = 0;
+  for (let i = path3.length - 1; i >= 0; --i) {
+    const code3 = path3.charCodeAt(i);
+    if (isPosixPathSeparator(code3)) {
+      if (!matchedSlash) {
+        startPart = i + 1;
+        break;
+      }
+      continue;
+    }
+    if (end === -1) {
+      matchedSlash = false;
+      end = i + 1;
+    }
+    if (code3 === CHAR_DOT) {
+      if (startDot === -1)
+        startDot = i;
+      else if (preDotState !== 1)
+        preDotState = 1;
+    } else if (startDot !== -1) {
+      preDotState = -1;
+    }
+  }
+  if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
+  preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
+  preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+    return "";
+  }
+  return path3.slice(startDot, end);
+}
+function format4(pathObject) {
+  if (pathObject === null || typeof pathObject !== "object") {
+    throw new TypeError(
+      `The "pathObject" argument must be of type Object. Received type ${typeof pathObject}`
+    );
+  }
+  return _format("/", pathObject);
+}
+function parse2(path3) {
+  assertPath(path3);
+  const ret = { root: "", dir: "", base: "", ext: "", name: "" };
+  if (path3.length === 0)
+    return ret;
+  const isAbsolute4 = isPosixPathSeparator(path3.charCodeAt(0));
+  let start;
+  if (isAbsolute4) {
+    ret.root = "/";
+    start = 1;
+  } else {
+    start = 0;
+  }
+  let startDot = -1;
+  let startPart = 0;
+  let end = -1;
+  let matchedSlash = true;
+  let i = path3.length - 1;
+  let preDotState = 0;
+  for (; i >= start; --i) {
+    const code3 = path3.charCodeAt(i);
+    if (isPosixPathSeparator(code3)) {
+      if (!matchedSlash) {
+        startPart = i + 1;
+        break;
+      }
+      continue;
+    }
+    if (end === -1) {
+      matchedSlash = false;
+      end = i + 1;
+    }
+    if (code3 === CHAR_DOT) {
+      if (startDot === -1)
+        startDot = i;
+      else if (preDotState !== 1)
+        preDotState = 1;
+    } else if (startDot !== -1) {
+      preDotState = -1;
+    }
+  }
+  if (startDot === -1 || end === -1 || // We saw a non-dot character immediately before the dot
+  preDotState === 0 || // The (right-most) trimmed path component is exactly '..'
+  preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+    if (end !== -1) {
+      if (startPart === 0 && isAbsolute4) {
+        ret.base = ret.name = path3.slice(1, end);
+      } else {
+        ret.base = ret.name = path3.slice(startPart, end);
+      }
+    }
+    ret.base = ret.base || "/";
+  } else {
+    if (startPart === 0 && isAbsolute4) {
+      ret.name = path3.slice(1, startDot);
+      ret.base = path3.slice(1, end);
+    } else {
+      ret.name = path3.slice(startPart, startDot);
+      ret.base = path3.slice(startPart, end);
+    }
+    ret.ext = path3.slice(startDot, end);
+  }
+  if (startPart > 0) {
+    ret.dir = stripTrailingSeparators(
+      path3.slice(0, startPart - 1),
+      isPosixPathSeparator
+    );
+  } else if (isAbsolute4)
+    ret.dir = "/";
+  return ret;
+}
+function fromFileUrl2(url) {
+  url = url instanceof URL ? url : new URL(url);
+  if (url.protocol != "file:") {
+    throw new TypeError("Must be a file URL.");
+  }
+  return decodeURIComponent(
+    url.pathname.replace(/%(?![0-9A-Fa-f]{2})/g, "%25")
+  );
+}
+function toFileUrl2(path3) {
+  if (!isAbsolute2(path3)) {
+    throw new TypeError("Must be an absolute path.");
+  }
+  const url = new URL("file:///");
+  url.pathname = encodeWhitespace(
+    path3.replace(/%/g, "%25").replace(/\\/g, "%5C")
+  );
+  return url;
+}
+
+// https://deno.land/std@0.196.0/path/glob.ts
+var path = isWindows ? win32_exports : posix_exports;
+var { join: join3, normalize: normalize3 } = path;
+
+// https://deno.land/std@0.196.0/path/mod.ts
+var path2 = isWindows ? win32_exports : posix_exports;
+var {
+  basename: basename3,
+  delimiter: delimiter3,
+  dirname: dirname3,
+  extname: extname3,
+  format: format5,
+  fromFileUrl: fromFileUrl3,
+  isAbsolute: isAbsolute3,
+  join: join4,
+  normalize: normalize4,
+  parse: parse3,
+  relative: relative3,
+  resolve: resolve3,
+  toFileUrl: toFileUrl3,
+  toNamespacedPath: toNamespacedPath3
+} = path2;
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/_figures.ts
+var main = {
+  ARROW_UP: "\u2191",
+  ARROW_DOWN: "\u2193",
+  ARROW_LEFT: "\u2190",
+  ARROW_RIGHT: "\u2192",
+  ARROW_UP_LEFT: "\u2196",
+  ARROW_UP_RIGHT: "\u2197",
+  ARROW_DOWN_RIGHT: "\u2198",
+  ARROW_DOWN_LEFT: "\u2199",
+  RADIO_ON: "\u25C9",
+  RADIO_OFF: "\u25EF",
+  TICK: "\u2714",
+  CROSS: "\u2718",
+  ELLIPSIS: "\u2026",
+  POINTER_SMALL: "\u203A",
+  POINTER_SMALL_LEFT: "\u2039",
+  LINE: "\u2500",
+  POINTER: "\u276F",
+  POINTER_LEFT: "\u276E",
+  INFO: "\u2139",
+  TAB_LEFT: "\u21E4",
+  TAB_RIGHT: "\u21E5",
+  ESCAPE: "\u238B",
+  BACKSPACE: "\u232B",
+  PAGE_UP: "\u21DE",
+  PAGE_DOWN: "\u21DF",
+  ENTER: "\u21B5",
+  SEARCH: "\u{1F50E}",
+  FOLDER: "\u{1F4C1}",
+  FOLDER_OPEN: "\u{1F4C2}"
+};
+var win = {
+  ...main,
+  RADIO_ON: "(*)",
+  RADIO_OFF: "( )",
+  TICK: "\u221A",
+  CROSS: "\xD7",
+  POINTER_SMALL: "\xBB"
+};
+var Figures = Deno.build.os === "windows" ? win : main;
+var keyMap = {
+  up: "ARROW_UP",
+  down: "ARROW_DOWN",
+  left: "ARROW_LEFT",
+  right: "ARROW_RIGHT",
+  pageup: "PAGE_UP",
+  pagedown: "PAGE_DOWN",
+  tab: "TAB_RIGHT",
+  enter: "ENTER",
+  return: "ENTER"
+};
+function getFiguresByKeys(keys) {
+  const figures = [];
+  for (const key of keys) {
+    const figure = Figures[keyMap[key]] ?? key;
+    if (!figures.includes(figure)) {
+      figures.push(figure);
+    }
+  }
+  return figures;
+}
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/ansi_escapes.ts
+var ansi_escapes_exports = {};
+__export(ansi_escapes_exports, {
+  bel: () => bel,
+  clearScreen: () => clearScreen,
+  clearTerminal: () => clearTerminal,
+  cursorBackward: () => cursorBackward,
+  cursorDown: () => cursorDown,
+  cursorForward: () => cursorForward,
+  cursorHide: () => cursorHide,
+  cursorLeft: () => cursorLeft,
+  cursorMove: () => cursorMove,
+  cursorNextLine: () => cursorNextLine,
+  cursorPosition: () => cursorPosition,
+  cursorPrevLine: () => cursorPrevLine,
+  cursorRestore: () => cursorRestore,
+  cursorSave: () => cursorSave,
+  cursorShow: () => cursorShow,
+  cursorTo: () => cursorTo,
+  cursorUp: () => cursorUp,
+  eraseDown: () => eraseDown,
+  eraseLine: () => eraseLine,
+  eraseLineEnd: () => eraseLineEnd,
+  eraseLineStart: () => eraseLineStart,
+  eraseLines: () => eraseLines,
+  eraseScreen: () => eraseScreen,
+  eraseUp: () => eraseUp,
+  image: () => image,
+  link: () => link,
+  scrollDown: () => scrollDown,
+  scrollUp: () => scrollUp
+});
+
+// https://deno.land/std@0.196.0/encoding/base64.ts
+var base64abc = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+  "G",
+  "H",
+  "I",
+  "J",
+  "K",
+  "L",
+  "M",
+  "N",
+  "O",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "T",
+  "U",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "+",
+  "/"
+];
+function encode(data) {
+  const uint8 = typeof data === "string" ? new TextEncoder().encode(data) : data instanceof Uint8Array ? data : new Uint8Array(data);
+  let result = "", i;
+  const l = uint8.length;
+  for (i = 2; i < l; i += 3) {
+    result += base64abc[uint8[i - 2] >> 2];
+    result += base64abc[(uint8[i - 2] & 3) << 4 | uint8[i - 1] >> 4];
+    result += base64abc[(uint8[i - 1] & 15) << 2 | uint8[i] >> 6];
+    result += base64abc[uint8[i] & 63];
+  }
+  if (i === l + 1) {
+    result += base64abc[uint8[i - 2] >> 2];
+    result += base64abc[(uint8[i - 2] & 3) << 4];
+    result += "==";
+  }
+  if (i === l) {
+    result += base64abc[uint8[i - 2] >> 2];
+    result += base64abc[(uint8[i - 2] & 3) << 4 | uint8[i - 1] >> 4];
+    result += base64abc[(uint8[i - 1] & 15) << 2];
+    result += "=";
+  }
+  return result;
+}
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/ansi_escapes.ts
+var ESC = "\x1B";
+var CSI = `${ESC}[`;
+var OSC = `${ESC}]`;
+var SEP2 = ";";
+var bel = "\x07";
+var cursorPosition = `${CSI}6n`;
+function cursorTo(x, y) {
+  if (typeof y !== "number") {
+    return `${CSI}${x}G`;
+  }
+  return `${CSI}${y};${x}H`;
+}
+function cursorMove(x, y) {
+  let ret = "";
+  if (x < 0) {
+    ret += `${CSI}${-x}D`;
+  } else if (x > 0) {
+    ret += `${CSI}${x}C`;
+  }
+  if (y < 0) {
+    ret += `${CSI}${-y}A`;
+  } else if (y > 0) {
+    ret += `${CSI}${y}B`;
+  }
+  return ret;
+}
+function cursorUp(count = 1) {
+  return `${CSI}${count}A`;
+}
+function cursorDown(count = 1) {
+  return `${CSI}${count}B`;
+}
+function cursorForward(count = 1) {
+  return `${CSI}${count}C`;
+}
+function cursorBackward(count = 1) {
+  return `${CSI}${count}D`;
+}
+function cursorNextLine(count = 1) {
+  return `${CSI}E`.repeat(count);
+}
+function cursorPrevLine(count = 1) {
+  return `${CSI}F`.repeat(count);
+}
+var cursorLeft = `${CSI}G`;
+var cursorHide = `${CSI}?25l`;
+var cursorShow = `${CSI}?25h`;
+var cursorSave = `${ESC}7`;
+var cursorRestore = `${ESC}8`;
+function scrollUp(count = 1) {
+  return `${CSI}S`.repeat(count);
+}
+function scrollDown(count = 1) {
+  return `${CSI}T`.repeat(count);
+}
+var eraseScreen = `${CSI}2J`;
+function eraseUp(count = 1) {
+  return `${CSI}1J`.repeat(count);
+}
+function eraseDown(count = 1) {
+  return `${CSI}0J`.repeat(count);
+}
+var eraseLine = `${CSI}2K`;
+var eraseLineEnd = `${CSI}0K`;
+var eraseLineStart = `${CSI}1K`;
+function eraseLines(count) {
+  let clear = "";
+  for (let i = 0; i < count; i++) {
+    clear += eraseLine + (i < count - 1 ? cursorUp() : "");
+  }
+  clear += cursorLeft;
+  return clear;
+}
+var clearScreen = "\x1Bc";
+var clearTerminal = Deno.build.os === "windows" ? `${eraseScreen}${CSI}0f` : `${eraseScreen}${CSI}3J${CSI}H`;
+function link(text, url) {
+  return [
+    OSC,
+    "8",
+    SEP2,
+    SEP2,
+    url,
+    bel,
+    text,
+    OSC,
+    "8",
+    SEP2,
+    SEP2,
+    bel
+  ].join("");
+}
+function image(buffer, options) {
+  let ret = `${OSC}1337;File=inline=1`;
+  if (options?.width) {
+    ret += `;width=${options.width}`;
+  }
+  if (options?.height) {
+    ret += `;height=${options.height}`;
+  }
+  if (options?.preserveAspectRatio === false) {
+    ret += ";preserveAspectRatio=0";
+  }
+  return ret + ":" + encode(buffer) + bel;
+}
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/cursor_position.ts
+var encoder2 = new TextEncoder();
+var decoder = new TextDecoder();
+function getCursorPosition({
+  reader = Deno.stdin,
+  writer = Deno.stdout
+} = {}) {
+  const data = new Uint8Array(8);
+  reader.setRaw(true);
+  writer.writeSync(encoder2.encode(cursorPosition));
+  reader.readSync(data);
+  reader.setRaw(false);
+  const [y, x] = decoder.decode(data).match(/\[(\d+);(\d+)R/)?.slice(1, 3).map(Number) ?? [0, 0];
+  return { x, y };
+}
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/tty.ts
+var tty = factory2();
+var encoder3 = new TextEncoder();
+function factory2(options) {
+  let result = "";
+  let stack = [];
+  const writer = options?.writer ?? Deno.stdout;
+  const reader = options?.reader ?? Deno.stdin;
+  const tty2 = function(...args) {
+    if (this) {
+      update(args);
+      writer.writeSync(encoder3.encode(result));
+      return this;
+    }
+    return factory2(args[0] ?? options);
+  };
+  tty2.text = function(text) {
+    stack.push([text, []]);
+    update();
+    writer.writeSync(encoder3.encode(result));
+    return this;
+  };
+  tty2.getCursorPosition = () => getCursorPosition({ writer, reader });
+  const methodList = Object.entries(
+    ansi_escapes_exports
+  );
+  for (const [name, method] of methodList) {
+    if (name === "cursorPosition") {
+      continue;
+    }
+    Object.defineProperty(tty2, name, {
+      get() {
+        stack.push([method, []]);
+        return this;
+      }
+    });
+  }
+  return tty2;
+  function update(args) {
+    if (!stack.length) {
+      return;
+    }
+    if (args) {
+      stack[stack.length - 1][1] = args;
+    }
+    result = stack.reduce(
+      (prev, [cur, args2]) => prev + (typeof cur === "string" ? cur : cur.call(tty2, ...args2)),
+      ""
+    );
+    stack = [];
+  }
+}
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/keycode/_key_codes.ts
+var KeyMap = {
+  /* xterm/gnome ESC [ letter (with modifier) */
+  "[P": "f1",
+  "[Q": "f2",
+  "[R": "f3",
+  "[S": "f4",
+  /* xterm/gnome ESC O letter (without modifier) */
+  "OP": "f1",
+  "OQ": "f2",
+  "OR": "f3",
+  "OS": "f4",
+  /* xterm/rxvt ESC [ number ~ */
+  "[11~": "f1",
+  "[12~": "f2",
+  "[13~": "f3",
+  "[14~": "f4",
+  /* from Cygwin and used in libuv */
+  "[[A": "f1",
+  "[[B": "f2",
+  "[[C": "f3",
+  "[[D": "f4",
+  "[[E": "f5",
+  /* common */
+  "[15~": "f5",
+  "[17~": "f6",
+  "[18~": "f7",
+  "[19~": "f8",
+  "[20~": "f9",
+  "[21~": "f10",
+  "[23~": "f11",
+  "[24~": "f12",
+  /* xterm ESC [ letter */
+  "[A": "up",
+  "[B": "down",
+  "[C": "right",
+  "[D": "left",
+  "[E": "clear",
+  "[F": "end",
+  "[H": "home",
+  /* xterm/gnome ESC O letter */
+  "OA": "up",
+  "OB": "down",
+  "OC": "right",
+  "OD": "left",
+  "OE": "clear",
+  "OF": "end",
+  "OH": "home",
+  /* xterm/rxvt ESC [ number ~ */
+  "[1~": "home",
+  "[2~": "insert",
+  "[3~": "delete",
+  "[4~": "end",
+  "[5~": "pageup",
+  "[6~": "pagedown",
+  /* putty */
+  "[[5~": "pageup",
+  "[[6~": "pagedown",
+  /* rxvt */
+  "[7~": "home",
+  "[8~": "end"
+};
+var KeyMapShift = {
+  /* rxvt keys with modifiers */
+  "[a": "up",
+  "[b": "down",
+  "[c": "right",
+  "[d": "left",
+  "[e": "clear",
+  "[2$": "insert",
+  "[3$": "delete",
+  "[5$": "pageup",
+  "[6$": "pagedown",
+  "[7$": "home",
+  "[8$": "end",
+  "[Z": "tab"
+};
+var KeyMapCtrl = {
+  /* rxvt keys with modifiers */
+  "Oa": "up",
+  "Ob": "down",
+  "Oc": "right",
+  "Od": "left",
+  "Oe": "clear",
+  "[2^": "insert",
+  "[3^": "delete",
+  "[5^": "pageup",
+  "[6^": "pagedown",
+  "[7^": "home",
+  "[8^": "end"
+};
+var SpecialKeyMap = {
+  "\r": "return",
+  "\n": "enter",
+  "	": "tab",
+  "\b": "backspace",
+  "\x7F": "backspace",
+  "\x1B": "escape",
+  " ": "space"
+};
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/keycode/key_code.ts
+var kUTF16SurrogateThreshold = 65536;
+var kEscape = "\x1B";
+function parse4(data) {
+  let index = -1;
+  const keys = [];
+  const input = data instanceof Uint8Array ? new TextDecoder().decode(data) : data;
+  const hasNext = () => input.length - 1 >= index + 1;
+  const next = () => input[++index];
+  parseNext();
+  return keys;
+  function parseNext() {
+    let ch = next();
+    let s = ch;
+    let escaped = false;
+    const key = {
+      name: void 0,
+      char: void 0,
+      sequence: void 0,
+      code: void 0,
+      ctrl: false,
+      meta: false,
+      shift: false
+    };
+    if (ch === kEscape && hasNext()) {
+      escaped = true;
+      s += ch = next();
+      if (ch === kEscape) {
+        s += ch = next();
+      }
+    }
+    if (escaped && (ch === "O" || ch === "[")) {
+      let code3 = ch;
+      let modifier = 0;
+      if (ch === "O") {
+        s += ch = next();
+        if (ch >= "0" && ch <= "9") {
+          modifier = (Number(ch) >> 0) - 1;
+          s += ch = next();
+        }
+        code3 += ch;
+      } else if (ch === "[") {
+        s += ch = next();
+        if (ch === "[") {
+          code3 += ch;
+          s += ch = next();
+        }
+        const cmdStart = s.length - 1;
+        if (ch >= "0" && ch <= "9") {
+          s += ch = next();
+          if (ch >= "0" && ch <= "9") {
+            s += ch = next();
+          }
+        }
+        if (ch === ";") {
+          s += ch = next();
+          if (ch >= "0" && ch <= "9") {
+            s += next();
+          }
+        }
+        const cmd = s.slice(cmdStart);
+        let match2;
+        if (match2 = cmd.match(/^(\d\d?)(;(\d))?([~^$])$/)) {
+          code3 += match2[1] + match2[4];
+          modifier = (Number(match2[3]) || 1) - 1;
+        } else if (match2 = cmd.match(/^((\d;)?(\d))?([A-Za-z])$/)) {
+          code3 += match2[4];
+          modifier = (Number(match2[3]) || 1) - 1;
+        } else {
+          code3 += cmd;
+        }
+      }
+      key.ctrl = !!(modifier & 4);
+      key.meta = !!(modifier & 10);
+      key.shift = !!(modifier & 1);
+      key.code = code3;
+      if (code3 in KeyMap) {
+        key.name = KeyMap[code3];
+      } else if (code3 in KeyMapShift) {
+        key.name = KeyMapShift[code3];
+        key.shift = true;
+      } else if (code3 in KeyMapCtrl) {
+        key.name = KeyMapCtrl[code3];
+        key.ctrl = true;
+      } else {
+        key.name = "undefined";
+      }
+    } else if (ch in SpecialKeyMap) {
+      key.name = SpecialKeyMap[ch];
+      key.meta = escaped;
+      if (key.name === "space") {
+        key.char = ch;
+      }
+    } else if (!escaped && ch <= "") {
+      key.name = String.fromCharCode(
+        ch.charCodeAt(0) + "a".charCodeAt(0) - 1
+      );
+      key.ctrl = true;
+      key.char = key.name;
+    } else if (/^[0-9A-Za-z]$/.test(ch)) {
+      key.name = ch.toLowerCase();
+      key.shift = /^[A-Z]$/.test(ch);
+      key.meta = escaped;
+      key.char = ch;
+    } else if (escaped) {
+      key.name = ch.length ? void 0 : "escape";
+      key.meta = true;
+    } else {
+      key.name = ch;
+      key.char = ch;
+    }
+    key.sequence = s;
+    if (s.length !== 0 && (key.name !== void 0 || escaped) || charLengthAt(s, 0) === s.length) {
+      keys.push(key);
+    } else {
+      throw new Error("Unrecognized or broken escape sequence");
+    }
+    if (hasNext()) {
+      parseNext();
+    }
+  }
+}
+function charLengthAt(str, i) {
+  const pos = str.codePointAt(i);
+  if (typeof pos === "undefined") {
+    return 1;
+  }
+  return pos >= kUTF16SurrogateThreshold ? 2 : 1;
+}
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/_generic_prompt.ts
+var GenericPrompt = class _GenericPrompt {
+  static injectedValue;
+  cursor = {
+    x: 0,
+    y: 0
+  };
+  #value;
+  #lastError;
+  #isFirstRun = true;
+  #encoder = new TextEncoder();
+  /**
+   * Inject prompt value. If called, the prompt doesn't prompt for an input and
+   * returns immediately the injected value. Can be used for unit tests or pre
+   * selections.
+   *
+   * @param value Input value.
+   */
+  static inject(value) {
+    _GenericPrompt.injectedValue = value;
+  }
+  getDefaultSettings(options) {
+    return {
+      ...options,
+      tty: tty({
+        // Stdin is only used by getCursorPosition which we don't need.
+        reader: Deno.stdin,
+        writer: options.writer ?? Deno.stdout
+      }),
+      cbreak: options.cbreak ?? false,
+      reader: options.reader ?? Deno.stdin,
+      writer: options.writer ?? Deno.stdout,
+      pointer: options.pointer ?? brightBlue2(Figures.POINTER_SMALL),
+      prefix: options.prefix ?? yellow2("? "),
+      indent: options.indent ?? "",
+      keys: {
+        submit: ["enter", "return"],
+        ...options.keys ?? {}
+      }
+    };
+  }
+  /** Execute the prompt. */
+  async prompt() {
+    try {
+      return await this.#execute();
+    } finally {
+      this.settings.tty.cursorShow();
+    }
+  }
+  /** Clear prompt output. */
+  clear() {
+    this.settings.tty.cursorLeft.eraseDown();
+  }
+  /** Execute the prompt. */
+  #execute = async () => {
+    if (typeof _GenericPrompt.injectedValue !== "undefined" && this.#lastError) {
+      throw new Error(this.error());
+    }
+    await this.render();
+    this.#lastError = void 0;
+    if (!await this.read()) {
+      return this.#execute();
+    }
+    if (typeof this.#value === "undefined") {
+      throw new Error("internal error: failed to read value");
+    }
+    this.clear();
+    const successMessage = this.success(this.#value);
+    if (successMessage) {
+      this.settings.writer.writeSync(
+        this.#encoder.encode(successMessage + "\n")
+      );
+    }
+    _GenericPrompt.injectedValue = void 0;
+    this.settings.tty.cursorShow();
+    return this.#value;
+  };
+  /** Render prompt. */
+  async render() {
+    const result = await Promise.all([
+      this.message(),
+      this.body?.(),
+      this.footer()
+    ]);
+    const content = result.filter(Boolean).join("\n");
+    const lines = content.split("\n");
+    const columns = getColumns();
+    const linesCount = columns ? lines.reduce((prev, next) => {
+      const length = stripColor2(next).length;
+      return prev + (length > columns ? Math.ceil(length / columns) : 1);
+    }, 0) : content.split("\n").length;
+    const y = linesCount - this.cursor.y - 1;
+    if (!this.#isFirstRun || this.#lastError) {
+      this.clear();
+    }
+    this.#isFirstRun = false;
+    this.settings.writer.writeSync(this.#encoder.encode(content));
+    if (y) {
+      this.settings.tty.cursorUp(y);
+    }
+    this.settings.tty.cursorTo(this.cursor.x);
+  }
+  /** Read user input from stdin, handle events and validate user input. */
+  async read() {
+    if (typeof _GenericPrompt.injectedValue !== "undefined") {
+      const value = _GenericPrompt.injectedValue;
+      await this.#validateValue(value);
+    } else {
+      const events = await this.#readKey();
+      if (!events.length) {
+        return false;
+      }
+      for (const event of events) {
+        await this.handleEvent(event);
+      }
+    }
+    return typeof this.#value !== "undefined";
+  }
+  submit() {
+    return this.#validateValue(this.getValue());
+  }
+  message() {
+    return `${this.settings.indent}${this.settings.prefix}` + bold2(this.settings.message) + this.defaults();
+  }
+  defaults() {
+    let defaultMessage = "";
+    if (typeof this.settings.default !== "undefined" && !this.settings.hideDefault) {
+      defaultMessage += dim2(` (${this.format(this.settings.default)})`);
+    }
+    return defaultMessage;
+  }
+  /** Get prompt success message. */
+  success(value) {
+    return `${this.settings.indent}${this.settings.prefix}` + bold2(this.settings.message) + this.defaults() + " " + this.settings.pointer + " " + green2(this.format(value));
+  }
+  footer() {
+    return this.error() ?? this.hint();
+  }
+  error() {
+    return this.#lastError ? this.settings.indent + red2(bold2(`${Figures.CROSS} `) + this.#lastError) : void 0;
+  }
+  hint() {
+    return this.settings.hint ? this.settings.indent + italic2(brightBlue2(dim2(`${Figures.POINTER} `) + this.settings.hint)) : void 0;
+  }
+  setErrorMessage(message2) {
+    this.#lastError = message2;
+  }
+  /**
+   * Handle user input event.
+   * @param event Key event.
+   */
+  async handleEvent(event) {
+    switch (true) {
+      case (event.name === "c" && event.ctrl):
+        this.clear();
+        this.settings.tty.cursorShow();
+        Deno.exit(130);
+        return;
+      case this.isKey(this.settings.keys, "submit", event):
+        await this.submit();
+        break;
+    }
+  }
+  /** Read user input from stdin and pars ansi codes. */
+  #readKey = async () => {
+    const data = await this.#readChar();
+    return data.length ? parse4(data) : [];
+  };
+  /** Read user input from stdin. */
+  #readChar = async () => {
+    const buffer = new Uint8Array(8);
+    const isTty = Deno.isatty(this.settings.reader.rid);
+    if (isTty) {
+      this.settings.reader.setRaw(
+        true,
+        { cbreak: this.settings.cbreak }
+      );
+    }
+    const nread = await this.settings.reader.read(buffer);
+    if (isTty) {
+      this.settings.reader.setRaw(false);
+    }
+    if (nread === null) {
+      return buffer;
+    }
+    return buffer.subarray(0, nread);
+  };
+  /**
+   * Map input value to output value. If a custom transform handler ist set, the
+   * custom handler will be executed, otherwise the default transform handler
+   * from the prompt will be executed.
+   * @param value The value to transform.
+   */
+  #transformValue = (value) => {
+    return this.settings.transform ? this.settings.transform(value) : this.transform(value);
+  };
+  /**
+   * Validate input value. Set error message if validation fails and transform
+   * output value on success.
+   * If a default value is set, the default will be used as value without any
+   * validation.
+   * If a custom validation handler ist set, the custom handler will
+   * be executed, otherwise a prompt specific default validation handler will be
+   * executed.
+   * @param value The value to validate.
+   */
+  #validateValue = async (value) => {
+    if (!value && typeof this.settings.default !== "undefined") {
+      this.#value = this.settings.default;
+      return;
+    }
+    this.#value = void 0;
+    this.#lastError = void 0;
+    const validation = await (this.settings.validate ? this.settings.validate(value) : this.validate(value));
+    if (validation === false) {
+      this.#lastError = `Invalid answer.`;
+    } else if (typeof validation === "string") {
+      this.#lastError = validation;
+    } else {
+      this.#value = this.#transformValue(value);
+    }
+  };
+  /**
+   * Check if key event has given name or sequence.
+   * @param keys  Key map.
+   * @param name  Key name.
+   * @param event Key event.
+   */
+  isKey(keys, name, event) {
+    const keyNames = keys?.[name];
+    return typeof keyNames !== "undefined" && (typeof event.name !== "undefined" && keyNames.indexOf(event.name) !== -1 || typeof event.sequence !== "undefined" && keyNames.indexOf(event.sequence) !== -1);
+  }
+};
+function getColumns() {
+  try {
+    return Deno.consoleSize().columns ?? null;
+  } catch (_error) {
+    return null;
+  }
+}
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/_generic_input.ts
+var GenericInput = class extends GenericPrompt {
+  inputValue = "";
+  inputIndex = 0;
+  getDefaultSettings(options) {
+    const settings = super.getDefaultSettings(options);
+    return {
+      ...settings,
+      keys: {
+        moveCursorLeft: ["left"],
+        moveCursorRight: ["right"],
+        deleteCharLeft: ["backspace"],
+        deleteCharRight: ["delete"],
+        ...settings.keys ?? {}
+      }
+    };
+  }
+  getCurrentInputValue() {
+    return this.inputValue;
+  }
+  message() {
+    const message2 = super.message() + " " + this.settings.pointer + " ";
+    this.cursor.x = stripColor2(message2).length + this.inputIndex + 1;
+    return message2 + this.input();
+  }
+  input() {
+    return underline2(this.inputValue);
+  }
+  highlight(value, color1 = dim2, color2 = brightBlue2) {
+    value = value.toString();
+    const inputLowerCase = this.getCurrentInputValue().toLowerCase();
+    const valueLowerCase = value.toLowerCase();
+    const index = valueLowerCase.indexOf(inputLowerCase);
+    const matched = value.slice(index, index + inputLowerCase.length);
+    return index >= 0 ? color1(value.slice(0, index)) + color2(matched) + color1(value.slice(index + inputLowerCase.length)) : value;
+  }
+  /**
+   * Handle user input event.
+   * @param event Key event.
+   */
+  async handleEvent(event) {
+    switch (true) {
+      case this.isKey(this.settings.keys, "moveCursorLeft", event):
+        this.moveCursorLeft();
+        break;
+      case this.isKey(this.settings.keys, "moveCursorRight", event):
+        this.moveCursorRight();
+        break;
+      case this.isKey(this.settings.keys, "deleteCharRight", event):
+        this.deleteCharRight();
+        break;
+      case this.isKey(this.settings.keys, "deleteCharLeft", event):
+        this.deleteChar();
+        break;
+      case (event.char && !event.meta && !event.ctrl):
+        this.addChar(event.char);
+        break;
+      default:
+        await super.handleEvent(event);
+    }
+  }
+  /** Add character to current input. */
+  addChar(char) {
+    this.inputValue = this.inputValue.slice(0, this.inputIndex) + char + this.inputValue.slice(this.inputIndex);
+    this.inputIndex++;
+  }
+  /** Move prompt cursor left. */
+  moveCursorLeft() {
+    if (this.inputIndex > 0) {
+      this.inputIndex--;
+    }
+  }
+  /** Move prompt cursor right. */
+  moveCursorRight() {
+    if (this.inputIndex < this.inputValue.length) {
+      this.inputIndex++;
+    }
+  }
+  /** Delete char left. */
+  deleteChar() {
+    if (this.inputIndex > 0) {
+      this.inputIndex--;
+      this.deleteCharRight();
+    }
+  }
+  /** Delete char right. */
+  deleteCharRight() {
+    if (this.inputIndex < this.inputValue.length) {
+      this.inputValue = this.inputValue.slice(0, this.inputIndex) + this.inputValue.slice(this.inputIndex + 1);
+    }
+  }
+};
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/_utils/distance.ts
+function distance(a, b) {
+  if (a.length == 0) {
+    return b.length;
+  }
+  if (b.length == 0) {
+    return a.length;
+  }
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) == a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+        );
+      }
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/_generic_suggestions.ts
+var sep3 = Deno.build.os === "windows" ? "\\" : "/";
+var GenericSuggestions = class extends GenericInput {
+  suggestionsIndex = -1;
+  suggestionsOffset = 0;
+  suggestions = [];
+  #hasReadPermissions;
+  getDefaultSettings(options) {
+    const settings = super.getDefaultSettings(options);
+    return {
+      ...settings,
+      listPointer: options.listPointer ?? brightBlue2(Figures.POINTER),
+      maxRows: options.maxRows ?? 8,
+      keys: {
+        complete: ["tab"],
+        next: ["up"],
+        previous: ["down"],
+        nextPage: ["pageup"],
+        previousPage: ["pagedown"],
+        ...settings.keys ?? {}
+      }
+    };
+  }
+  get localStorage() {
+    if (this.settings.id && "localStorage" in window) {
+      try {
+        return window.localStorage;
+      } catch (_) {
+      }
+    }
+    return null;
+  }
+  loadSuggestions() {
+    if (this.settings.id) {
+      const json2 = this.localStorage?.getItem(this.settings.id);
+      const suggestions = json2 ? JSON.parse(json2) : [];
+      if (!Array.isArray(suggestions)) {
+        return [];
+      }
+      return suggestions;
+    }
+    return [];
+  }
+  saveSuggestions(...suggestions) {
+    if (this.settings.id) {
+      this.localStorage?.setItem(
+        this.settings.id,
+        JSON.stringify([
+          ...suggestions,
+          ...this.loadSuggestions()
+        ].filter(uniqueSuggestions))
+      );
+    }
+  }
+  async render() {
+    if (this.settings.files && this.#hasReadPermissions === void 0) {
+      const status = await Deno.permissions.request({ name: "read" });
+      this.#hasReadPermissions = status.state === "granted";
+    }
+    await this.match();
+    return super.render();
+  }
+  async match() {
+    this.suggestions = await this.getSuggestions();
+    this.suggestionsIndex = Math.max(
+      this.getCurrentInputValue().trim().length === 0 ? -1 : 0,
+      Math.min(this.suggestions.length - 1, this.suggestionsIndex)
+    );
+    this.suggestionsOffset = Math.max(
+      0,
+      Math.min(
+        this.suggestions.length - this.getListHeight(),
+        this.suggestionsOffset
+      )
+    );
+  }
+  input() {
+    return super.input() + dim2(this.getSuggestion());
+  }
+  getSuggestion() {
+    return this.suggestions[this.suggestionsIndex]?.toString().substr(
+      this.getCurrentInputValue().length
+    ) ?? "";
+  }
+  async getUserSuggestions(input) {
+    return typeof this.settings.suggestions === "function" ? await this.settings.suggestions(input) : this.settings.suggestions ?? [];
+  }
+  #isFileModeEnabled() {
+    return !!this.settings.files && this.#hasReadPermissions === true;
+  }
+  async getFileSuggestions(input) {
+    if (!this.#isFileModeEnabled()) {
+      return [];
+    }
+    const path3 = await Deno.stat(input).then((file) => file.isDirectory ? input : dirname3(input)).catch(() => dirname3(input));
+    return await listDir(path3, this.settings.files);
+  }
+  async getSuggestions() {
+    const input = this.getCurrentInputValue();
+    const suggestions = [
+      ...this.loadSuggestions(),
+      ...await this.getUserSuggestions(input),
+      ...await this.getFileSuggestions(input)
+    ].filter(uniqueSuggestions);
+    if (!input.length) {
+      return suggestions;
+    }
+    return suggestions.filter(
+      (value) => stripColor2(value.toString()).toLowerCase().startsWith(input.toLowerCase())
+    ).sort(
+      (a, b) => distance((a || a).toString(), input) - distance((b || b).toString(), input)
+    );
+  }
+  body() {
+    return this.getList() + this.getInfo();
+  }
+  getInfo() {
+    if (!this.settings.info) {
+      return "";
+    }
+    const selected = this.suggestionsIndex + 1;
+    const matched = this.suggestions.length;
+    const actions = [];
+    if (this.suggestions.length) {
+      if (this.settings.list) {
+        actions.push(
+          ["Next", getFiguresByKeys(this.settings.keys?.next ?? [])],
+          ["Previous", getFiguresByKeys(this.settings.keys?.previous ?? [])],
+          ["Next Page", getFiguresByKeys(this.settings.keys?.nextPage ?? [])],
+          [
+            "Previous Page",
+            getFiguresByKeys(this.settings.keys?.previousPage ?? [])
+          ]
+        );
+      } else {
+        actions.push(
+          ["Next", getFiguresByKeys(this.settings.keys?.next ?? [])],
+          ["Previous", getFiguresByKeys(this.settings.keys?.previous ?? [])]
+        );
+      }
+      actions.push(
+        ["Complete", getFiguresByKeys(this.settings.keys?.complete ?? [])]
+      );
+    }
+    actions.push(
+      ["Submit", getFiguresByKeys(this.settings.keys?.submit ?? [])]
+    );
+    let info6 = this.settings.indent;
+    if (this.suggestions.length) {
+      info6 += brightBlue2(Figures.INFO) + bold2(` ${selected}/${matched} `);
+    }
+    info6 += actions.map((cur) => `${cur[0]}: ${bold2(cur[1].join(" "))}`).join(", ");
+    return info6;
+  }
+  getList() {
+    if (!this.suggestions.length || !this.settings.list) {
+      return "";
+    }
+    const list = [];
+    const height = this.getListHeight();
+    for (let i = this.suggestionsOffset; i < this.suggestionsOffset + height; i++) {
+      list.push(
+        this.getListItem(
+          this.suggestions[i],
+          this.suggestionsIndex === i
+        )
+      );
+    }
+    if (list.length && this.settings.info) {
+      list.push("");
+    }
+    return list.join("\n");
+  }
+  /**
+   * Render option.
+   * @param value        Option.
+   * @param isSelected  Set to true if option is selected.
+   */
+  getListItem(value, isSelected) {
+    let line = this.settings.indent ?? "";
+    line += isSelected ? `${this.settings.listPointer} ` : "  ";
+    if (isSelected) {
+      line += underline2(this.highlight(value));
+    } else {
+      line += this.highlight(value);
+    }
+    return line;
+  }
+  /** Get suggestions row height. */
+  getListHeight(suggestions = this.suggestions) {
+    return Math.min(
+      suggestions.length,
+      this.settings.maxRows || suggestions.length
+    );
+  }
+  /**
+   * Handle user input event.
+   * @param event Key event.
+   */
+  async handleEvent(event) {
+    switch (true) {
+      case this.isKey(this.settings.keys, "next", event):
+        if (this.settings.list) {
+          this.selectPreviousSuggestion();
+        } else {
+          this.selectNextSuggestion();
+        }
+        break;
+      case this.isKey(this.settings.keys, "previous", event):
+        if (this.settings.list) {
+          this.selectNextSuggestion();
+        } else {
+          this.selectPreviousSuggestion();
+        }
+        break;
+      case this.isKey(this.settings.keys, "nextPage", event):
+        if (this.settings.list) {
+          this.selectPreviousSuggestionsPage();
+        } else {
+          this.selectNextSuggestionsPage();
+        }
+        break;
+      case this.isKey(this.settings.keys, "previousPage", event):
+        if (this.settings.list) {
+          this.selectNextSuggestionsPage();
+        } else {
+          this.selectPreviousSuggestionsPage();
+        }
+        break;
+      case this.isKey(this.settings.keys, "complete", event):
+        await this.#completeValue();
+        break;
+      case this.isKey(this.settings.keys, "moveCursorRight", event):
+        if (this.inputIndex < this.inputValue.length) {
+          this.moveCursorRight();
+        } else {
+          await this.#completeValue();
+        }
+        break;
+      default:
+        await super.handleEvent(event);
+    }
+  }
+  /** Delete char right. */
+  deleteCharRight() {
+    if (this.inputIndex < this.inputValue.length) {
+      super.deleteCharRight();
+      if (!this.getCurrentInputValue().length) {
+        this.suggestionsIndex = -1;
+        this.suggestionsOffset = 0;
+      }
+    }
+  }
+  async #completeValue() {
+    this.inputValue = await this.complete();
+    this.inputIndex = this.inputValue.length;
+    this.suggestionsIndex = 0;
+    this.suggestionsOffset = 0;
+  }
+  async complete() {
+    let input = this.getCurrentInputValue();
+    const suggestion = this.suggestions[this.suggestionsIndex]?.toString();
+    if (this.settings.complete) {
+      input = await this.settings.complete(input, suggestion);
+    } else if (this.#isFileModeEnabled() && input.at(-1) !== sep3 && await isDirectory(input) && (this.getCurrentInputValue().at(-1) !== "." || this.getCurrentInputValue().endsWith(".."))) {
+      input += sep3;
+    } else if (suggestion) {
+      input = suggestion;
+    }
+    return this.#isFileModeEnabled() ? normalize4(input) : input;
+  }
+  /** Select previous suggestion. */
+  selectPreviousSuggestion() {
+    if (this.suggestions.length) {
+      if (this.suggestionsIndex > -1) {
+        this.suggestionsIndex--;
+        if (this.suggestionsIndex < this.suggestionsOffset) {
+          this.suggestionsOffset--;
+        }
+      }
+    }
+  }
+  /** Select next suggestion. */
+  selectNextSuggestion() {
+    if (this.suggestions.length) {
+      if (this.suggestionsIndex < this.suggestions.length - 1) {
+        this.suggestionsIndex++;
+        if (this.suggestionsIndex >= this.suggestionsOffset + this.getListHeight()) {
+          this.suggestionsOffset++;
+        }
+      }
+    }
+  }
+  /** Select previous suggestions page. */
+  selectPreviousSuggestionsPage() {
+    if (this.suggestions.length) {
+      const height = this.getListHeight();
+      if (this.suggestionsOffset >= height) {
+        this.suggestionsIndex -= height;
+        this.suggestionsOffset -= height;
+      } else if (this.suggestionsOffset > 0) {
+        this.suggestionsIndex -= this.suggestionsOffset;
+        this.suggestionsOffset = 0;
+      }
+    }
+  }
+  /** Select next suggestions page. */
+  selectNextSuggestionsPage() {
+    if (this.suggestions.length) {
+      const height = this.getListHeight();
+      if (this.suggestionsOffset + height + height < this.suggestions.length) {
+        this.suggestionsIndex += height;
+        this.suggestionsOffset += height;
+      } else if (this.suggestionsOffset + height < this.suggestions.length) {
+        const offset = this.suggestions.length - height;
+        this.suggestionsIndex += offset - this.suggestionsOffset;
+        this.suggestionsOffset = offset;
+      }
+    }
+  }
+};
+function uniqueSuggestions(value, index, self) {
+  return typeof value !== "undefined" && value !== "" && self.indexOf(value) === index;
+}
+function isDirectory(path3) {
+  return Deno.stat(path3).then((file) => file.isDirectory).catch(() => false);
+}
+async function listDir(path3, mode) {
+  const fileNames = [];
+  for await (const file of Deno.readDir(path3 || ".")) {
+    if (mode === true && (file.name.startsWith(".") || file.name.endsWith("~"))) {
+      continue;
+    }
+    const filePath = join4(path3, file.name);
+    if (mode instanceof RegExp && !mode.test(filePath)) {
+      continue;
+    }
+    fileNames.push(filePath);
+  }
+  return fileNames.sort(function(a, b) {
+    return a.toLowerCase().localeCompare(b.toLowerCase());
+  });
+}
+
+// https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/input.ts
+var Input = class extends GenericSuggestions {
+  settings;
+  /** Execute the prompt with provided options. */
+  static prompt(options) {
+    return new this(options).prompt();
+  }
+  /**
+   * Inject prompt value. If called, the prompt doesn't prompt for an input and
+   * returns immediately the injected value. Can be used for unit tests or pre
+   * selections.
+   *
+   * @param value Input value.
+   */
+  static inject(value) {
+    GenericPrompt.inject(value);
+  }
+  constructor(options) {
+    super();
+    if (typeof options === "string") {
+      options = { message: options };
+    }
+    this.settings = this.getDefaultSettings(options);
+  }
+  getDefaultSettings(options) {
+    return {
+      ...super.getDefaultSettings(options),
+      minLength: options.minLength ?? 0,
+      maxLength: options.maxLength ?? Infinity
+    };
+  }
+  success(value) {
+    this.saveSuggestions(value);
+    return super.success(value);
+  }
+  /** Get input value. */
+  getValue() {
+    return this.settings.files ? normalize4(this.inputValue) : this.inputValue;
+  }
+  /**
+   * Validate input value.
+   * @param value User input value.
+   * @return True on success, false or error message on error.
+   */
+  validate(value) {
+    if (typeof value !== "string") {
+      return false;
+    }
+    if (value.length < this.settings.minLength) {
+      return `Value must be longer than ${this.settings.minLength} but has a length of ${value.length}.`;
+    }
+    if (value.length > this.settings.maxLength) {
+      return `Value can't be longer than ${this.settings.maxLength} but has a length of ${value.length}.`;
+    }
+    return true;
+  }
+  /**
+   * Map input value to output value.
+   * @param value Input value.
+   * @return Output value.
+   */
+  transform(value) {
+    return value.trim();
+  }
+  /**
+   * Format output value.
+   * @param value Output value.
+   */
+  format(value) {
+    return value;
+  }
+};
+
+// src/commands/readme.ts
 var error4 = colors.bold.red;
 var warn4 = colors.bold.yellow;
 var info4 = colors.bold.blue;
+var readmeCmd = new Command().name("readme").description("Create readme.").action(async () => {
+  const name = await Input.prompt(`What's your project name?`);
+  await Deno.writeTextFile(
+    "readme.md",
+    `
+<p align="center">
+<img src="https://ashishdotme-assets.s3.ap-south-1.amazonaws.com/logo.png" alt="drawing" width="100"/>
+</p>
+
+<h2 align="center">${name}</h2>
+
+<p align="center">
+<a href="https://img.shields.io/github/last-commit/ashishdotme/${name}?style=for-the-badge"><img src="https://img.shields.io/github/last-commit/ashishdotme/${name}?style=for-the-badge"></a>
+</p>
+
+<p align="center">\u{1F4E6} about project </p>
+
+## Support
+
+If you find this project useful, you can buy me a cup of coffee
+
+<a href="https://patreon.com/ashishdotme/" target="_blank">
+<img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="Become a Patreon">
+</a>
+
+## Licence
+
+${name} is open source and released under the MIT Licence.
+
+## To connect with me
+
+<p align = "center">
+
+[<img src="https://img.shields.io/badge/twitter-%231DA1F2.svg?&style=for-the-badge&logo=twitter&logoColor=white&color=black" />](https://twitter.com/ashishdotme)
+[<img src="https://img.shields.io/badge/facebook-%2312100E.svg?&style=for-the-badge&logo=facebook&logoColor=white&color=black" />](https://facebook.com/ashishdotme)
+[<img src="https://img.shields.io/badge/instagram-%2312100E.svg?&style=for-the-badge&logo=instagram&logoColor=white&color=black" />](https://instagram.com/ashishdotme)
+[<img src ="https://img.shields.io/badge/website-%23.svg?&style=for-the-badge&logo=&logoColor=white%22&color=black">](https://ashish.me)
+
+</p>
+        
+        `
+  );
+  console.log("Readme created");
+});
+
+// src/ap.ts
+var error5 = colors.bold.red;
+var warn5 = colors.bold.yellow;
+var info5 = colors.bold.blue;
 var rootCmd = new Command().name("ap").version(deno_default.version).action(
   async () => {
-    const resp = await callApi(`/stats`);
+    const resp = await callApi(`/summary.json`, "https://app.ashish.me/api");
     if (!resp.ok) {
       console.error(await resp.text());
       Deno.exit(1);
     }
     const data = await resp.json();
     if (!data) {
-      console.log(error4("[ERROR]"), "invalid response");
+      console.log(error5("[ERROR]"), "invalid response");
       Deno.exit(1);
     }
     console.log(
-      info4(
+      info5(
         `Today - ${format2(/* @__PURE__ */ new Date(), "dd MMMM yyyy")}`
       )
     );
     console.log(
-      info4(
+      info5(
         `Last leetcode date - ${format2(new Date(data.lastLeetcode.created), "dd MMMM yyyy")}`
       )
     );
     console.log(
-      info4(
+      info5(
         `Last Github Commit Date - ${format2(new Date(data.github.lastCommit), "dd MMMM yyyy")}`
       )
     );
@@ -10720,6 +13415,7 @@ var rootCmd = new Command().name("ap").version(deno_default.version).action(
 rootCmd.command("movie", movieCmd);
 rootCmd.command("event", eventCmd);
 rootCmd.command("transaction", transactionCmd);
+rootCmd.command("readme", readmeCmd);
 rootCmd.command("completions", new CompletionsCommand());
 rootCmd.command(
   "upgrade",
