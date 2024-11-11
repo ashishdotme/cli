@@ -18,7 +18,7 @@ const info = colors.bold.blue;
 
 const rootCmd = new Command().name("ap").version(manifest.version).action(
   async () => {
-    const resp = await callApi(`/stats`);
+    const resp = await callApi(`/summary.json`, "https://app.ashish.me/api");
     if (!resp.ok) {
       console.error(await resp.text());
       Deno.exit(1);

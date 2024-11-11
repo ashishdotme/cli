@@ -9,11 +9,12 @@ if (!ashishdotmeToken) {
 
 export async function callApi(
   path: string,
+  api?: string,
   options?: RequestInit & {
     paginate?: boolean;
   },
 ): Promise<Response> {
-  const apiURL = Deno.env.get("ASHISHDOTME_API_URL") || "https://api.ashish.me";
+  const apiURL = api || "https://api.ashish.me";
   const headers = {
     ...options?.headers,
     apiKey: `${ashishdotmeToken}`,
