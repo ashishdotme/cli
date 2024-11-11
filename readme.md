@@ -15,6 +15,16 @@
 <img src=".github/workflows/assets/ap.png" alt="drawing" width="800"/>
 </p>
 
+## Installation
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/ashishdotme/cli/refs/heads/main/install.sh | bash
+```
+
+## List of commands
+
+- `readme` - Generate readme file 
+- `movie list` - List of movies watched
 
 ## Support
 
